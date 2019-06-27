@@ -242,19 +242,22 @@ class HasPlatformsMixin(GameWindow):
     def create_fence(self, name='full', coords=(0, 0), role=Role.FOREGROUND):
         return self.create_object(f'other/fence/{name}', coords, role)
 
-    def create_foreground(self, name, coords=(0, 0)):
-        return self.create_object(name, coords, Role.FOREGROUND)
+    def create_foreground(self, name, coords=(0, 0), at=None):
+        return self.create_object(name, coords, Role.FOREGROUND, at=at)
 
-    def create_background(self, name, coords=(0, 0)):
-        return self.create_object(name, coords, Role.BACKGROUND)
+    def create_background(self, name, coords=(0, 0), at=None):
+        return self.create_object(name, coords, Role.BACKGROUND, at=at)
 
-    def create_object(self, name, coords=(0, 0), role=Role.OBJECT):
+    def create_object(self, name, coords=(0, 0), role=Role.OBJECT, at=None):
         sprite = get_sprite(name, scale=self.scaling, role=role)
         x, y = self.tile_to_position(*coords)
         x = int(x + 32)
         y = int(y + sprite.height / 2)
         sprite.position = (x, y)
-        self.__append(sprite)
+        if at is None:
+            self.__append(sprite)
+        else:
+            at.append(sprite)
         return sprite
 
     #

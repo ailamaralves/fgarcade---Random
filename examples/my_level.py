@@ -1,4 +1,6 @@
 import fgarcade as ge
+from arcade import SpriteList, Sprite
+from fgarcade.assets import get_sprite_path 
 
 
 class Game(ge.Platformer):
@@ -9,6 +11,9 @@ class Game(ge.Platformer):
     title = 'Candy Shop'
     player_initial_tile = 4, 1
     final = 50
+    world_theme = 'green'
+    #background_theme = 'brown'
+    
 
     def init_world(self):
         # Inicio Fim e chão
@@ -53,6 +58,13 @@ class Game(ge.Platformer):
         #self.create_foreground('other/plant/blue-1', (7, 2))
         #self.create_foreground('other/plant/blue-5', (9, 2))
 
+        self.enemies = SpriteList()
+        self.enemy = self.create_object('enemy/enemyFloating_1', (10, 5), at=self.enemies)
+        
+        self.background_near = SpriteList(use_spatial_hash=False)
+        self.background_fixed = SpriteList(use_spatial_hash=False)
+        self.background_fixed.append(Sprite(get_sprite_path('background/bg1')))
+
     def init_enemies(self):
         pass
 
@@ -64,6 +76,11 @@ class Game(ge.Platformer):
         self.init_world()
         self.init_items()
         self.init_enemies()
+        
+    
+    def on_draw(self):
+        super().on_draw()
+        self.enemies.draw()
 
 
 if __name__ == "__main__":

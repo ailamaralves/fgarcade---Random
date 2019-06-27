@@ -52,18 +52,20 @@ class HasBackgroundMixin(GameWindow):
         Hook called when viewport changes. Update background using parallax.
         """
         # Adjust fixed background parallax
-        dx = self.background_fixed[0].left - \
-             self.viewport_horizontal_start
-        dy = self.background_fixed[0].bottom - \
-             self.viewport_vertical_start
-        self.background_fixed.move(round(-dx), round(-dy))
+        if len(self.background_fixed):
+            dx = self.background_fixed[0].left - \
+                 self.viewport_horizontal_start
+            dy = self.background_fixed[0].bottom - \
+                 self.viewport_vertical_start
+            self.background_fixed.move(round(-dx), round(-dy))
 
         # Adjust hills parallax
-        dx = self.background_near[0].left - \
-             self.viewport_horizontal_start * (1 - self.parallax_ratio)
-        dy = self.background_near[0].bottom - \
-             self.viewport_vertical_start * (1 - self.parallax_ratio)
-        self.background_near.move(round(-dx), round(-dy))
+        if len(self.background_near):
+            dx = self.background_near[0].left - \
+                 self.viewport_horizontal_start * (1 - self.parallax_ratio)
+            dy = self.background_near[0].bottom - \
+                 self.viewport_vertical_start * (1 - self.parallax_ratio)
+            self.background_near.move(round(-dx), round(-dy))
 
     def draw_background(self):
         """
