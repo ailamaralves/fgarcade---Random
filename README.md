@@ -1,4 +1,4 @@
-# Nome: Random DS
+# Grupo Random DS
 
 ## Integrantes
 	16/0022673 - Ailamar Alves Guimarães
