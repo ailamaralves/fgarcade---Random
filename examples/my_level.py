@@ -12,6 +12,7 @@ class Game(ge.Platformer):
     player_initial_tile = 4, 1
     final = 50
     world_theme = 'green'
+    player_theme = 'grey'
     #background_theme = 'brown'
     
 
@@ -40,24 +41,6 @@ class Game(ge.Platformer):
         self.create_tower(2, 3, coords=(42, 1))
         self.create_tower(5, 3, coords=(44, 1))
 
-        #self.create_block('green', (5, 8))
-        #self.create_block('red', (6, 8))
-        #self.create_block('grey', (7, 8))
-        #self.create_block('brown', (8, 8))
-        #self.create_block('red-lock', (9, 8))
-
-        #self.create_arrow('right', (3, 1))
-
-
-        #self.create_fence('left', (10, 1))
-        #self.create_fence('middle', (11, 1))
-        #self.create_fence('middle', (12, 1))
-        #self.create_fence('right', (13, 1))
-
-        #self.create_foreground('other/plant/blue-3', (4, 1))
-        #self.create_foreground('other/plant/blue-1', (7, 2))
-        #self.create_foreground('other/plant/blue-5', (9, 2))
-
         self.enemies = SpriteList()
         self.enemy = self.create_object('enemy/enemyFloating_1', (10, 5), at=self.enemies)
         
@@ -68,9 +51,11 @@ class Game(ge.Platformer):
     def init_enemies(self):
         pass
 
-    def init_items(self):
+    def collide_enemies(self):
         pass
 
+    def init_items(self):
+        pass
 
     def init(self):
         self.init_world()
