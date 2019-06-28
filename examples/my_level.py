@@ -65,6 +65,9 @@ class Game(ge.Platformer):
         self.spike = self.create_object('other/spikes/spikes-high', (30, 1))
         self.spike = self.create_object('other/spikes/spikes-high', (29, 1))
 
+        self.items = SpriteList()
+        self.item = self.create_object('other/items/yellowGem', (6, 4), at=self.items)
+
         self.background_near = SpriteList(use_spatial_hash=False)
         self.background_fixed = SpriteList(use_spatial_hash=False)
         self.background_fixed.append(Sprite(get_sprite_path('background/bg1')))
@@ -87,6 +90,7 @@ class Game(ge.Platformer):
     def on_draw(self):
         super().on_draw()
         self.enemies.draw()
+        self.items.draw()
 
 
 if __name__ == "__main__":
