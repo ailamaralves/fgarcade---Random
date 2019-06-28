@@ -5,7 +5,7 @@ from fgarcade.assets import get_sprite_path
 
 class Game(ge.Platformer):
     """
-    Simple platformer example
+    Simple game my_level
     """
 
     title = 'Candy Shop'
@@ -17,7 +17,7 @@ class Game(ge.Platformer):
     
 
     def init_world(self):
-        # Inicio Fim e chão
+        # Inicio, Fim e chão
         self.create_tower(10, 2, coords=(0, 1))
         self.create_ground(self.final, coords=(0, 0), smooth_ends=False)
         self.create_platform(1, coords=(20, 90))
