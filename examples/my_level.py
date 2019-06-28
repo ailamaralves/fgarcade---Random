@@ -51,6 +51,7 @@ class Game(ge.Platformer):
         self.spike = self.create_object('other/spikes/spikes-high', (21, 1))
         self.spike = self.create_object('other/spikes/spikes-high', (22, 1))
         self.spike = self.create_object('other/spikes/spikes-high', (23, 1))
+        
         self.spike = self.create_object('other/spikes/spikes-high', (40, 1))
         self.spike = self.create_object('other/spikes/spikes-high', (41, 1))
         self.spike = self.create_object('other/spikes/spikes-high', (39, 1))
