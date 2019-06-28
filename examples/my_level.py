@@ -44,6 +44,27 @@ class Game(ge.Platformer):
         self.enemies = SpriteList()
         self.enemy = self.create_object('enemy/enemyFloating_1', (10, 5), at=self.enemies)
         
+        self.spike = self.create_object('other/spikes/spikes-high', (20, 1))
+        self.spike = self.create_object('other/spikes/spikes-high', (17, 1))
+        self.spike = self.create_object('other/spikes/spikes-high', (18, 1))
+        self.spike = self.create_object('other/spikes/spikes-high', (19, 1))
+        self.spike = self.create_object('other/spikes/spikes-high', (21, 1))
+        self.spike = self.create_object('other/spikes/spikes-high', (22, 1))
+        self.spike = self.create_object('other/spikes/spikes-high', (23, 1))
+        self.spike = self.create_object('other/spikes/spikes-high', (40, 1))
+        self.spike = self.create_object('other/spikes/spikes-high', (41, 1))
+        self.spike = self.create_object('other/spikes/spikes-high', (39, 1))
+        self.spike = self.create_object('other/spikes/spikes-high', (38, 1))
+        self.spike = self.create_object('other/spikes/spikes-high', (37, 1))
+        self.spike = self.create_object('other/spikes/spikes-high', (36, 1))
+        self.spike = self.create_object('other/spikes/spikes-high', (35, 1))
+        self.spike = self.create_object('other/spikes/spikes-high', (34, 1))
+        self.spike = self.create_object('other/spikes/spikes-high', (33, 1))
+        self.spike = self.create_object('other/spikes/spikes-high', (32, 1))
+        self.spike = self.create_object('other/spikes/spikes-high', (31, 1))
+        self.spike = self.create_object('other/spikes/spikes-high', (30, 1))
+        self.spike = self.create_object('other/spikes/spikes-high', (29, 1))
+
         self.background_near = SpriteList(use_spatial_hash=False)
         self.background_fixed = SpriteList(use_spatial_hash=False)
         self.background_fixed.append(Sprite(get_sprite_path('background/bg1')))
@@ -69,4 +90,4 @@ class Game(ge.Platformer):
 
 
 if __name__ == "__main__":
-    Game().run()
+    Game().run() 
