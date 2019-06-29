@@ -1,6 +1,8 @@
 import fgarcade as ge
 from arcade import SpriteList, Sprite
 from fgarcade.assets import get_sprite_path 
+from random import randint
+import arcade
 
 
 class Game(ge.Platformer):
@@ -13,13 +15,12 @@ class Game(ge.Platformer):
     final = 50
     world_theme = 'green'
     player_theme = 'grey'
-    #background_theme = 'brown'
-    
+    #background_theme = 'brown'   
 
     def init_world(self):
         # Inicio, Fim e chão
         self.create_tower(10, 2, coords=(0, 1))
-        self.create_ground(self.final, coords=(0, 0), smooth_ends=False)
+        self.create_ground(self.final, coords=(0, 0), smooth_ends=True)
         self.create_platform(1, coords=(20, 90))
         self.create_tower(10, coords=(self.final - 1, 1))
 
@@ -40,9 +41,6 @@ class Game(ge.Platformer):
 
         self.create_tower(2, 3, coords=(42, 1))
         self.create_tower(5, 3, coords=(44, 1))
-
-        self.enemies = SpriteList()
-        self.enemy = self.create_object('enemy/enemyFloating_1', (10, 5), at=self.enemies)
         
         self.spike = self.create_object('other/spikes/spikes-high', (20, 1))
         self.spike = self.create_object('other/spikes/spikes-high', (17, 1))
@@ -66,27 +64,25 @@ class Game(ge.Platformer):
         self.spike = self.create_object('other/spikes/spikes-high', (30, 1))
         self.spike = self.create_object('other/spikes/spikes-high', (29, 1))
 
-        self.items = SpriteList()
-        self.item = self.create_object('other/items/yellowGem', (6, 4), at=self.items)
-
         self.background_near = SpriteList(use_spatial_hash=False)
         self.background_fixed = SpriteList(use_spatial_hash=False)
         self.background_fixed.append(Sprite(get_sprite_path('background/bg1')))
 
     def init_enemies(self):
-        pass
-
-    def collide_enemies(self):
-        pass
+        self.enemies = SpriteList()
+        self.enemy = self.create_object('enemy/enemyFloating_1', (10, 5), at=self.enemies)
 
     def init_items(self):
-        pass
+        self.items = SpriteList()
+        self.item = self.create_object('other/items/yellowGem', (6, 4), at=self.items)
 
     def init(self):
         self.init_world()
         self.init_items()
         self.init_enemies()
-        
+    
+    def collide_enemies(self):
+        pass
     
     def on_draw(self):
         super().on_draw()
