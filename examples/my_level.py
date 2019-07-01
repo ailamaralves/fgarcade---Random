@@ -74,7 +74,33 @@ class Game(ge.Platformer):
 
     def init_items(self):
         self.items = SpriteList()
+        self.item = self.create_object('other/items/greenCrystal', (1, 11), at=self.items)
+
         self.item = self.create_object('other/items/yellowGem', (6, 4), at=self.items)
+        self.item = self.create_object('other/items/yellowGem', (7, 4), at=self.items)
+        self.item = self.create_object('other/items/yellowGem', (8, 4), at=self.items)
+
+        self.item = self.create_object('other/items/yellowGem', (9, 7), at=self.items)
+        self.item = self.create_object('other/items/yellowGem', (10, 7), at=self.items)
+        self.item = self.create_object('other/items/yellowGem', (11, 7), at=self.items)
+
+        self.item = self.create_object('other/items/yellowGem', (12, 3), at=self.items)
+        self.item = self.create_object('other/items/yellowGem', (13, 3), at=self.items)
+
+        self.item = self.create_object('other/items/yellowGem', (14, 5), at=self.items)
+        self.item = self.create_object('other/items/yellowGem', (15, 5), at=self.items)
+        self.item = self.create_object('other/items/yellowGem', (16, 5), at=self.items)
+
+        self.item = self.create_object('other/items/yellowGem', (12, 10), at=self.items)
+        self.item = self.create_object('other/items/yellowGem', (13, 10), at=self.items)
+        self.item = self.create_object('other/items/yellowGem', (14, 10), at=self.items)
+
+        self.item = self.create_object('other/items/yellowGem', (20, 10), at=self.items)
+        self.item = self.create_object('other/items/yellowGem', (21, 10), at=self.items)
+        self.item = self.create_object('other/items/yellowGem', (22, 10), at=self.items)
+
+        self.item = self.create_object('other/items/yellowGem', (24, 3), at=self.items)
+        self.item = self.create_object('other/items/yellowGem', (25, 3), at=self.items)
 
     def init(self):
         self.init_world()
@@ -92,3 +118,4 @@ class Game(ge.Platformer):
 
 if __name__ == "__main__":
     Game().run() 
+    
