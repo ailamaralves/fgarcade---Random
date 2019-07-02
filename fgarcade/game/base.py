@@ -24,10 +24,10 @@ class GameWindow(arcade.Window):
     scaling = 1.0
 
     #: Screen width
-    width = 1850
+    width = 800
 
     #: Screen height
-    height = 1000
+    height = 600
 
     #: Window title
     title = 'FGArcade Game'
