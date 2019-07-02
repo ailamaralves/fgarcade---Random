@@ -94,17 +94,14 @@ class Game(ge.Platformer):
         self.enemies.append(enemy)
 
     def init_items(self):
-<<<<<<< HEAD
         self.coins = SpriteList()
         def add_coin(pos):
             coin = self.create_object('other/items/yellowGem', pos, at=self.coins)
             self.coins.append(coin)
-=======
 
         #Coins
         self.items = SpriteList()
         self.item = self.create_object('other/items/greenCrystal', (1, 11), at=self.items)
->>>>>>> a5086164275cee7c8e25ecefa6e92fed2ea7e18e
 
         for pt in [(6, 4), (7, 4), (8, 4), (9, 7), (10, 7), (11, 7),
                    (12, 3), (13, 3), (14, 5), (15, 5), (16, 5), (12, 10),
@@ -166,9 +163,4 @@ class Game(ge.Platformer):
 
 
 if __name__ == "__main__":
-<<<<<<< HEAD
     Game().run()
-=======
-    Game().run() 
-    
->>>>>>> a5086164275cee7c8e25ecefa6e92fed2ea7e18e
