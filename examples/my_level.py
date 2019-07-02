@@ -15,7 +15,7 @@ class Game(ge.Platformer):
     final = 50
     world_theme = 'green'
     player_theme = 'grey'
-    #background_theme = 'brown'   
+    #background_theme = 'brown'
 
     def init_world(self):
         # Inicio, Fim e chão
@@ -69,53 +69,57 @@ class Game(ge.Platformer):
         self.background_fixed.append(Sprite(get_sprite_path('background/bg1')))
 
     def init_enemies(self):
-        self.enemies = SpriteList()
-        self.enemy = self.create_object('enemy/enemyFloating_1', (10, 5), at=self.enemies)
+        self.enemies = SpriteList(is_static=True)
+        enemy = self.create_object('enemy/enemyFloating_1', (10, 5), at=self.enemies)
+        self.enemies.append(enemy)
 
     def init_items(self):
-        self.items = SpriteList()
-        self.item = self.create_object('other/items/greenCrystal', (1, 11), at=self.items)
+        self.coins = SpriteList()
+        def add_coin(pos):
+            coin = self.create_object('other/items/yellowGem', pos, at=self.coins)
+            self.coins.append(coin)
 
-        self.item = self.create_object('other/items/yellowGem', (6, 4), at=self.items)
-        self.item = self.create_object('other/items/yellowGem', (7, 4), at=self.items)
-        self.item = self.create_object('other/items/yellowGem', (8, 4), at=self.items)
-
-        self.item = self.create_object('other/items/yellowGem', (9, 7), at=self.items)
-        self.item = self.create_object('other/items/yellowGem', (10, 7), at=self.items)
-        self.item = self.create_object('other/items/yellowGem', (11, 7), at=self.items)
-
-        self.item = self.create_object('other/items/yellowGem', (12, 3), at=self.items)
-        self.item = self.create_object('other/items/yellowGem', (13, 3), at=self.items)
-
-        self.item = self.create_object('other/items/yellowGem', (14, 5), at=self.items)
-        self.item = self.create_object('other/items/yellowGem', (15, 5), at=self.items)
-        self.item = self.create_object('other/items/yellowGem', (16, 5), at=self.items)
-
-        self.item = self.create_object('other/items/yellowGem', (12, 10), at=self.items)
-        self.item = self.create_object('other/items/yellowGem', (13, 10), at=self.items)
-        self.item = self.create_object('other/items/yellowGem', (14, 10), at=self.items)
-
-        self.item = self.create_object('other/items/yellowGem', (20, 10), at=self.items)
-        self.item = self.create_object('other/items/yellowGem', (21, 10), at=self.items)
-        self.item = self.create_object('other/items/yellowGem', (22, 10), at=self.items)
-
-        self.item = self.create_object('other/items/yellowGem', (24, 3), at=self.items)
-        self.item = self.create_object('other/items/yellowGem', (25, 3), at=self.items)
+        for pt in [(6, 4), (7, 4), (8, 4), (9, 7), (10, 7), (11, 7),
+                   (12, 3), (13, 3), (14, 5), (15, 5), (16, 5), (12, 10),
+                   (13,10), (14,10), (20, 10), (21, 10), (22, 10), (24, 3),
+                   (25, 3)]:
+            add_coin(pt)
 
     def init(self):
         self.init_world()
         self.init_items()
         self.init_enemies()
-    
-    def collide_enemies(self):
+        self.score_coins = int(0)
+
+    def collide_coins(self, dt):
+        self.coins.update()
+
+        coins_hit_list = arcade.check_for_collision_with_list(self.player, self.coins)
+
+        i = 0
+        for coin in coins_hit_list:
+            coin.remove_from_sprite_lists()
+            i += 1
+            if i == 2:
+                self.score_coins += 1
+                i = 0
+
+    def collide_enemies(self, dt):
         pass
+
+    def on_update(self, dt):
+        super().on_update(dt)
+        self.collide_coins(dt)
+        self.collide_enemies(dt)
     
-    def on_draw(self):
-        super().on_draw()
+    def draw_elements(self):
+        super().draw_elements()
         self.enemies.draw()
-        self.items.draw()
+        self.coins.draw()
+
+        output = f"Score: {self.score_coins}"
+        arcade.draw_text(output, 10, 20, arcade.color.BLACK, 20)
 
 
 if __name__ == "__main__":
-    Game().run() 
-    
+    Game().run()

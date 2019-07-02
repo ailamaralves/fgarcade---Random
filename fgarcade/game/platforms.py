@@ -10,7 +10,7 @@ from .base import GameWindow
 
 class HasPlatformsMixin(GameWindow):
     """
-    Mixin class for arcade.Window's that define methods for creating platforms
+    Mixin clasis for arcade.Window's that define methods for creating platforms
     and elements on screen.
     """
 
@@ -21,11 +21,11 @@ class HasPlatformsMixin(GameWindow):
     scaling = 1.0
 
     #: Platform list
-    platforms = lazy(lambda _: arcade.SpriteList())
+    platforms = lazy(lambda _: arcade.SpriteList(is_static=True))
 
     #: Decorations
-    background_decorations = lazy(lambda _: arcade.SpriteList())
-    foreground_decorations = lazy(lambda _: arcade.SpriteList())
+    background_decorations = lazy(lambda _: arcade.SpriteList(is_static=True))
+    foreground_decorations = lazy(lambda _: arcade.SpriteList(is_static=True))
 
     #: Geometric properties
     @lazy
