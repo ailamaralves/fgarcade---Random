@@ -92,6 +92,7 @@ class Game(ge.Platformer):
         self.init_enemies()
         self.score_coins = int(0)
         self.player_life = int(4)
+        self.cont = int(0)
 
     def collide_coins(self, dt):
         self.coins.update()
@@ -101,7 +102,7 @@ class Game(ge.Platformer):
             coin.remove_from_sprite_lists()
             i += 1
             if i == 2:
-                self.score_coins += 1
+                self.score_coins += 10
                 i = 0
 
     def collide_spikes(self, dt):
@@ -109,18 +110,27 @@ class Game(ge.Platformer):
         spikes_hit_list = arcade.check_for_collision_with_list(self.player, self.spikes)
 
         for spike in spikes_hit_list:
-            self.player_die()
+            self.cont += 1
+            self.player_die(dt)
 
     def collide_enemies(self, dt):
         self.enemies.update()
         enemies_hit_list = arcade.check_for_collision_with_list(self.player, self.enemies)
 
         for enemie in enemies_hit_list:
-            self.player_die()
+            self.cont += 1
+            self.player_die(dt)
 
     # Função para quando o player morrer
     # É chamada quando o player colide com um espinho ou um inimigo
-    def player_die(self):
+    def player_die(self, dt):
+        if self.cont == 2:
+            arcade.pause(0.5)
+            super().player.player_initial_tile = 4, 1
+            self.player_life -= 1
+            self.cont = 0
+
+    def game_over(self, dt):
         pass
 
     def on_update(self, dt):
@@ -128,6 +138,7 @@ class Game(ge.Platformer):
         self.collide_coins(dt)
         self.collide_spikes(dt)
         self.collide_enemies(dt)
+        self.game_over(dt)
             
     def draw_elements(self):
         super().draw_elements()
