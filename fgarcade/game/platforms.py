@@ -276,6 +276,10 @@ class HasPlatformsMixin(GameWindow):
             self.spikes.append(spike)
             x+=1
 
+    def create_enemy(self, x, y):
+        enemy = self.create_object('enemy/enemyFloating_1', (x, y), at=self.enemies)
+        self.enemies.append(enemy)
+
     #
     # Auxiliary methods
     #
