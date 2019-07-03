@@ -15,7 +15,7 @@ class HasPlatformsMixin(GameWindow):
     """
 
     #: Configuration
-    world_theme = 'blue'
+    world_theme = 'green'
 
     #: Scale factor
     scaling = 1.0
@@ -259,6 +259,22 @@ class HasPlatformsMixin(GameWindow):
         else:
             at.append(sprite)
         return sprite
+
+    def create_coin(self, x, y, *args):
+        if args:
+            for i in range(args[0]):
+                coin = self.create_object('other/items/yellowGem', (x, y), at=self.coins)
+                self.coins.append(coin)
+                x += 1
+        else:
+            coin = self.create_object('other/items/yellowGem', (x, y), at=self.coins)
+            self.coins.append(coin)
+
+    def create_spike(self, tam, x, y):
+        for i in range(tam):
+            spike = self.create_object('other/spikes/spikes-high', (x, y))
+            self.spikes.append(spike)
+            x+=1
 
     #
     # Auxiliary methods

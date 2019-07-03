@@ -16,10 +16,10 @@ class HasPlayerMixin(GameWindow):
     scaling = 1.0
 
     #: Player theme
-    player_theme = 'red'
+    player_theme = 'grey'
 
     #: Initial player position (measured in tiles)
-    player_initial_tile = 1, 1
+    player_initial_tile = 4, 1
 
     #: Dummy physics engine
     physics_engine = record(can_jump=lambda: True, update=lambda *args: None)
@@ -89,9 +89,9 @@ class Player(AnimatedWalkingSprite):
     last_time_jumped = -float('inf')
 
     #: Commands bound to movement actions such as go left, right and jump
-    command_left = Command.LEFT
-    command_right = Command.RIGHT
-    command_jump = Command.UP
+    command_left = Command.ASDW_LEFT
+    command_right = Command.ASDW_RIGHT
+    command_jump = Command.ASDW_UP
 
     def __init__(self, theme, scaling=1.0, center_x=0, center_y=0, **kwargs):
         self.theme = theme
