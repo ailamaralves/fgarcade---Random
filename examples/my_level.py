@@ -91,6 +91,7 @@ class Game(ge.Platformer):
         self.init_items()
         self.init_enemies()
         self.score_coins = int(0)
+        self.player_life = int(4)
 
     def collide_coins(self, dt):
         self.coins.update()
@@ -134,11 +135,16 @@ class Game(ge.Platformer):
         self.coins.draw()
 
         #Placar de Contagem das moedas
-        output = f"Score: {self.score_coins}"
-        arcade.draw_text(output, 10, 20, arcade.color.BLACK, 20)
-        arcade.draw_text(output, 1850, 20, arcade.color.BLACK, 20)
-        arcade.draw_text(output, 3700, 20, arcade.color.BLACK, 20)
-        arcade.draw_text(output, 5550, 20, arcade.color.BLACK, 20)
+        output_score = f"Score: {self.score_coins} ||"
+        output_life = f"Life: {self.player_life}"
+        arcade.draw_text(output_score, 10, 20, arcade.color.BLACK, 20)
+        arcade.draw_text(output_life, 200, 20, arcade.color.BLACK, 20)
+        arcade.draw_text(output_score, 1850, 20, arcade.color.BLACK, 20)
+        arcade.draw_text(output_life, 2040, 20, arcade.color.BLACK, 20)
+        arcade.draw_text(output_score, 3700, 20, arcade.color.BLACK, 20)
+        arcade.draw_text(output_life, 3890, 20, arcade.color.BLACK, 20)
+        arcade.draw_text(f"Score: {self.score_coins}", 5550, 980, arcade.color.BLACK, 20)
+        arcade.draw_text(output_life, 5550, 940, arcade.color.BLACK, 20)
 
 
 if __name__ == "__main__":
