@@ -111,7 +111,7 @@ class Game(ge.Platformer):
 
         for spike in spikes_hit_list:
             self.cont += 1
-            self.player_die(dt)
+            self.player_die()
 
     def collide_enemies(self, dt):
         self.enemies.update()
@@ -119,11 +119,11 @@ class Game(ge.Platformer):
 
         for enemie in enemies_hit_list:
             self.cont += 1
-            self.player_die(dt)
+            self.player_die()
 
     # Função para quando o player morrer
     # É chamada quando o player colide com um espinho ou um inimigo
-    def player_die(self, dt):
+    def player_die(self):
         if self.cont == 2:
             arcade.pause(0.5)
             super().player.player_initial_tile = 4, 1
