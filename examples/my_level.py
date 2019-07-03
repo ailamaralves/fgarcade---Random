@@ -22,31 +22,23 @@ class Game(ge.Platformer):
         self.create_platform(1, coords=(20, 90))
 
         # Cenário
-        self.create_platform(3, coords=(6, 3))
-        self.create_platform(3, coords=(9, 6))
-        self.create_platform(3, coords=(12, 9))
-        self.create_platform(3, coords=(20, 9))
+        def add_platform(size, cords):
+            self.create_platform(size, coords=cords)
 
-        self.create_tower(2, 3, coords=(12, 1))
-        self.create_tower(4, 3, coords=(14, 1))
+        def add_tower(x, y, cords):
+            self.create_tower(x, y, coords=cords)
 
-        self.create_platform(1, coords=(20, 3))
+        for pt in [(3, (6, 3)), (3, (9,6)), (3, (12, 9)),
+                   (3, (20, 9)), (1, (20, 3)), (3, (33, 3)),
+                   (3, (62, 5)), (3, (67, 3))]:
+            s, l = pt
+            add_platform(s, l)
 
-        self.create_tower(2, 3, coords=(24, 1))
-        self.create_tower(4, 3, coords=(26, 1))
-
-        self.create_platform(3, coords=(33, 3))
-
-        self.create_tower(2, 3, coords=(52, 1))
-        self.create_tower(2, 3, coords=(56, 1))
-        self.create_tower(5, 3, coords=(54, 1))
-
-        self.create_platform(3, coords=(62, 5))
-
-        self.create_platform(3, coords=(67, 3))
-
-        self.create_tower(2, 3, coords=(75, 1))
-        self.create_tower(5, 3, coords=(73, 1))
+        for pt in [(2, 3, (12, 1)), (4, 3, (14, 1)), (2, 3, (24, 1)),
+                   (4, 3, (26, 1)), (2, 3, (52, 1)), (2, 3, (56, 1)),
+                   (5, 3, (54, 1)), (2, 3, (75, 1)), (5, 3, (73, 1))]:
+            x, y, w = pt
+            add_tower(x, y, w)
 
         # Spikes
         # Função para criar os espinhos. Ela recebe 3 argumentos: o "comprimento" dos espinhos, o X inicial e o Y
@@ -114,6 +106,7 @@ class Game(ge.Platformer):
     def collide_spikes(self, dt):
         self.spikes.update()
         spikes_hit_list = arcade.check_for_collision_with_list(self.player, self.spikes)
+
         for spike in spikes_hit_list:
             self.player_die()
 
