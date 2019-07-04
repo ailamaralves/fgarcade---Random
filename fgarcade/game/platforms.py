@@ -260,26 +260,6 @@ class HasPlatformsMixin(GameWindow):
             at.append(sprite)
         return sprite
 
-    def create_coin(self, x, y, *args):
-        if args:
-            for i in range(args[0]):
-                coin = self.create_object('other/items/yellowGem', (x, y), at=self.coins)
-                self.coins.append(coin)
-                x += 1
-        else:
-            coin = self.create_object('other/items/yellowGem', (x, y), at=self.coins)
-            self.coins.append(coin)
-
-    def create_spike(self, tam, x, y):
-        for i in range(tam):
-            spike = self.create_object('other/spikes/spikes-high', (x, y))
-            self.spikes.append(spike)
-            x+=1
-
-    def create_enemy(self, x, y):
-        enemy = self.create_object('enemy/enemyFloating_1', (x, y), at=self.enemies)
-        self.enemies.append(enemy)
-
     #
     # Auxiliary methods
     #

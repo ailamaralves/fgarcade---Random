@@ -28,6 +28,12 @@ class Game(ge.Platformer):
         def add_tower(x, y, cords):
             self.create_tower(x, y, coords=cords)
 
+        def create_spike(tam, x, y):
+            for i in range(tam):
+                spike = self.create_object('other/spikes/spikes-high', (x, y))
+                self.spikes.append(spike)
+                x += 1
+
         for pt in [(3, (6, 3)), (3, (9,6)), (3, (12, 9)),
                    (3, (20, 9)), (1, (20, 3)), (3, (33, 3)),
                    (3, (62, 5)), (3, (67, 3))]:
@@ -43,9 +49,10 @@ class Game(ge.Platformer):
         # Spikes
         # Função para criar os espinhos. Ela recebe 3 argumentos: o "comprimento" dos espinhos, o X inicial e o Y
         self.spikes = SpriteList()
-        self.create_spike(7, 17, 1)
-        self.create_spike(23, 29, 1)
-        self.create_spike(14, 59, 1)
+
+        for pos in [(7, 17, 1), (23, 29, 1), (14, 59, 1)]:
+            size, x, y = pos
+            create_spike(size, x, y)
 
         # Foreground
         self.create_arrow('right', (3, 1))
@@ -62,29 +69,38 @@ class Game(ge.Platformer):
     def init_enemies(self):
         self.enemies = SpriteList(is_static=True)
 
+        def create_enemy(pos):
+            enemy = self.create_object('enemy/enemyFloating_1', pos, at=self.enemies)
+            self.enemies.append(enemy)
+
         # Função para criar os inimigos dado as coordenadas X e Y
-        self.create_enemy(10, 7)
-        self.create_enemy(21, 10)
-        self.create_enemy(34, 4)
-        self.create_enemy(40, 4)
-        self.create_enemy(46, 4)
-        self.create_enemy(72, 6)
+        for pt in [(10, 7), (21, 10), (34, 4), (40, 4),
+                   (46, 4), (72, 6)]:
+            create_enemy(pt)
 
     def init_items(self):
         self.coins = SpriteList()
+
+        def create_coin(x, y, *args):
+            if args:
+                for i in range(args[0]):
+                    coin = self.create_object('other/items/yellowGem', (x, y), at=self.coins)
+                    self.coins.append(coin)
+                    x += 1
+            else:
+                coin = self.create_object('other/items/yellowGem', (x, y), at=self.coins)
+                self.coins.append(coin)
 
         # Função para criar as moedas. Ela recebe 3 argumentos:
         # o X, o Y e, caso precise, para plataformas, etc..., a quantidade de moedas
 
         #Coins
+        for pt in [(6, 4, 3), (9, 7, 3), (12, 3, 2), (14, 5, 3),
+                   (12, 10, 3), (20, 10, 3), (24, 3, 2)]:
+            x, y, args = pt
+            create_coin(x, y, args)
+
         self.items = SpriteList()
-        self.create_coin(6, 4, 3)
-        self.create_coin(9, 7, 3)
-        self.create_coin(12, 3, 2)
-        self.create_coin(14, 5, 3)
-        self.create_coin(12, 10, 3)
-        self.create_coin(20, 10, 3)
-        self.create_coin(24, 3, 2)
 
     def init(self):
         self.init_world()
