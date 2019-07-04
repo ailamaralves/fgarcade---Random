@@ -143,6 +143,7 @@ class Game(ge.Platformer):
         if self.cont == 2:
             arcade.pause(0.5)
             super().player.player_initial_tile = 4, 1
+            super().physics_engine.update()
             self.player_life -= 1
             self.cont = 0
 
