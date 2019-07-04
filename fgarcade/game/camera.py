@@ -16,8 +16,8 @@ class HasScrollingCameraMixin(GameWindow):
     #: Tolerance of the reference point for the camera. It moves camera if
     #: the reference point (usually the player) moves beyond those margins
     #: Measured in pixels.
-    viewport_margin_horizontal = 200
-    viewport_margin_vertical = 120
+    viewport_margin_horizontal = 500
+    viewport_margin_vertical = 300
 
     #: x, y coordinates for the start of viewport area
     viewport_horizontal_start = 0

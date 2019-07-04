@@ -24,10 +24,10 @@ class GameWindow(arcade.Window):
     scaling = 1.0
 
     #: Screen width
-    width = 800
+    width = 1200
 
     #: Screen height
-    height = 600
+    height = 1000
 
     #: Window title
     title = 'JOGO DS'

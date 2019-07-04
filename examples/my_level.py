@@ -4,6 +4,7 @@ from fgarcade.assets import get_sprite_path
 from random import randint
 import arcade
 from time import sleep
+from fgarcade.enums import Role
 
 
 class Game(ge.Platformer):
@@ -13,7 +14,9 @@ class Game(ge.Platformer):
 
     final = 90
     SCORE = 2
-
+    viewport_margin_horizontal = 500
+    viewport_margin_vertical = 120
+   
     def init_world(self):
         # Inicio, Fim e chão
         self.create_tower(10, 2, coords=(0, 1))
@@ -21,14 +24,12 @@ class Game(ge.Platformer):
         self.create_tower(10, coords=(self.final - 1, 1))
 
         # Plataforma para fazer a camera acompanhar o jogador em qualquer altura
-        self.create_platform(1, coords=(20, 90))
+        #self.create_platform(1, coords=(20, 90))
 
         # Cenário
-        def add_platform(size, cords):
-            self.create_platform(size, coords=cords)
-
-        def add_tower(x, y, cords):
-            self.create_tower(x, y, coords=cords)
+       
+        self.moving_platform_list = SpriteList()
+        platform = self.create_object('tile/blue/gs', (6, 3), at=self.moving_platform_list, role=Role.OBJECT)
 
         def create_spike(tam, x, y):
             for i in range(tam):
@@ -40,13 +41,13 @@ class Game(ge.Platformer):
                    (3, (20, 9)), (1, (20, 3)), (3, (33, 3)),
                    (3, (62, 5)), (3, (67, 3))]:
             s, l = pt
-            add_platform(s, l)
+            self.create_platform(s, l)
 
         for pt in [(2, 3, (12, 1)), (4, 3, (14, 1)), (2, 3, (24, 1)),
                    (4, 3, (26, 1)), (2, 3, (52, 1)), (2, 3, (56, 1)),
                    (5, 3, (54, 1)), (2, 3, (75, 1)), (5, 3, (73, 1))]:
             x, y, w = pt
-            add_tower(x, y, w)
+            self.create_tower(x, y, w)
 
         # Spikes
         self.spikes = SpriteList()
@@ -66,6 +67,9 @@ class Game(ge.Platformer):
         self.background_near = SpriteList(use_spatial_hash=False)
         self.background_fixed = SpriteList(use_spatial_hash=False)
         self.background_fixed.append(Sprite(get_sprite_path('background/bg1')))
+
+    def mov_platform(self):
+        pass
 
     def init_enemies(self):
         self.enemies = SpriteList(is_static=True)
@@ -149,8 +153,8 @@ class Game(ge.Platformer):
     # Função para quando o player morrer
     # É chamada quando o player colide com um espinho ou um inimigo
     def player_die(self):
-        pass
-        """if self.cont == self.SCORE:
+
+        if self.cont == self.SCORE:
             sleep(0.5)
             super().player.player_initial_tile = 4, 1
             super().physics_engine.update()
@@ -159,23 +163,28 @@ class Game(ge.Platformer):
             self.init_world()
             self.score_coins = 0
             self.player_life -= 1
-            self.cont = 0"""
-
+            self.cont = 0
     def game_over(self, dt):
         pass
+        
+    def move_platforms(self, dt):
+        for platform in self.moving_platform_list:
+            platform.center_x += 2
 
     def on_update(self, dt):
         super().on_update(dt)
         self.collide_coins(dt)
         self.collide_spikes(dt)
         self.collide_enemies(dt)
+        self.move_platforms(dt)
         self.game_over(dt)
             
     def draw_elements(self):
         super().draw_elements()
         self.enemies.draw()
         self.coins.draw()
-
+        self.moving_platform_list.draw()
+        
         #Placar de Contagem das moedas
         output_score = f"Score: {self.score_coins} ||"
         output_life = f"Life: {self.player_life}"

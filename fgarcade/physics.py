@@ -12,6 +12,7 @@ class PhysicsEnginePlatformer(arcade.PhysicsEnginePlatformer):
     def __init__(self, world):
         gravity = getattr(world, 'gravity_constant', 0.5)
         super().__init__(world.player, world.platforms, gravity)
+        self.moving_platforms = world.moving_platform_list
 
     def can_jump(self) -> bool:
         """
@@ -52,7 +53,10 @@ class PhysicsEnginePlatformer(arcade.PhysicsEnginePlatformer):
         player.center_x += player.change_x
 
         # Check for wall hit
-        hit_list = check_for_collision_with_list(player, self.platforms)
+        hit_list = [
+            *check_for_collision_with_list(player, self.platforms),
+            *check_for_collision_with_list(player, self.moving_platforms),
+        ]
         recover = 0.666
         min_shadow_x = 12
         min_shadow_y = 6
