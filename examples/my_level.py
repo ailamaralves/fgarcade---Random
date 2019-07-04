@@ -11,6 +11,7 @@ class Game(ge.Platformer):
     """
 
     final = 90
+    SCORE = 2
 
     def init_world(self):
         # Inicio, Fim e chão
@@ -117,7 +118,7 @@ class Game(ge.Platformer):
         for coin in coins_hit_list:
             coin.remove_from_sprite_lists()
             i += 1
-            if i == 2:
+            if i == self.SCORE:
                 self.score_coins += 10
                 i = 0
 
@@ -140,7 +141,7 @@ class Game(ge.Platformer):
     # Função para quando o player morrer
     # É chamada quando o player colide com um espinho ou um inimigo
     def player_die(self):
-        if self.cont == 2:
+        if self.cont == self.SCORE:
             arcade.pause(0.5)
             super().player.player_initial_tile = 4, 1
             super().physics_engine.update()
