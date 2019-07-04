@@ -49,12 +49,11 @@ class Game(ge.Platformer):
             add_tower(x, y, w)
 
         # Spikes
-        # Função para criar os espinhos. Ela recebe 3 argumentos: o "comprimento" dos espinhos, o X inicial e o Y
         self.spikes = SpriteList()
-
-        for pos in [(7, 17, 1), (23, 29, 1), (14, 59, 1)]:
-            size, x, y = pos
-            create_spike(size, x, y)
+        # Criei uma função para criar os espinhos. Ela recebe 3 argumentos: o "comprimento" dos espinhos, o X inicial e o Y
+        create_spike(7, 17, 1)
+        create_spike(23, 29, 1)
+        create_spike(14, 59, 1)
 
         # Foreground
         self.create_arrow('right', (3, 1))
@@ -71,14 +70,17 @@ class Game(ge.Platformer):
     def init_enemies(self):
         self.enemies = SpriteList(is_static=True)
 
-        def create_enemy(pos):
-            enemy = self.create_object('enemy/enemyFloating_1', pos, at=self.enemies)
+        def create_enemy(x, y):
+            enemy = self.create_object('enemy/enemyFloating_1', (x, y), at=self.enemies)
             self.enemies.append(enemy)
 
-        # Função para criar os inimigos dado as coordenadas X e Y
-        for pt in [(10, 7), (21, 10), (34, 4), (40, 4),
-                   (46, 4), (72, 6)]:
-            create_enemy(pt)
+               # Criei uma função para criar os inimigos daod as coordenadas X e Y
+        create_enemy(10, 7)
+        create_enemy(21, 10)
+        create_enemy(34, 4)
+        create_enemy(40, 4)
+        create_enemy(46, 4)
+        create_enemy(72, 6)
 
     def init_items(self):
         self.coins = SpriteList()
@@ -97,10 +99,15 @@ class Game(ge.Platformer):
         # o X, o Y e, caso precise, para plataformas, etc..., a quantidade de moedas
 
         #Coins
-        for pt in [(6, 4, 3), (9, 7, 3), (12, 3, 2), (14, 5, 3),
-                   (12, 10, 3), (20, 10, 3), (24, 3, 2)]:
-            x, y, args = pt
-            create_coin(x, y, args)
+        items = SpriteList()
+        create_coin(6, 4, 3)
+        create_coin(9, 7, 3)
+        create_coin(12, 3, 2)
+        create_coin(14, 5, 3)
+        create_coin(12, 10, 3)
+        create_coin(20, 10, 3)
+        create_coin(24, 3, 2)
+        
 
         self.items = SpriteList()
 
@@ -142,7 +149,8 @@ class Game(ge.Platformer):
     # Função para quando o player morrer
     # É chamada quando o player colide com um espinho ou um inimigo
     def player_die(self):
-        if self.cont == self.SCORE:
+        pass
+        """if self.cont == self.SCORE:
             sleep(0.5)
             super().player.player_initial_tile = 4, 1
             super().physics_engine.update()
@@ -151,7 +159,7 @@ class Game(ge.Platformer):
             self.init_world()
             self.score_coins = 0
             self.player_life -= 1
-            self.cont = 0
+            self.cont = 0"""
 
     def game_over(self, dt):
         pass
