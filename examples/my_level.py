@@ -3,6 +3,7 @@ from arcade import SpriteList, Sprite
 from fgarcade.assets import get_sprite_path 
 from random import randint
 import arcade
+from time import sleep
 
 
 class Game(ge.Platformer):
@@ -108,8 +109,8 @@ class Game(ge.Platformer):
         self.init_items()
         self.init_enemies()
         self.score_coins = int(0)
-        self.player_life = int(4)
         self.cont = int(0)
+        self.player_life = int(4)
 
     def collide_coins(self, dt):
         self.coins.update()
@@ -142,9 +143,13 @@ class Game(ge.Platformer):
     # É chamada quando o player colide com um espinho ou um inimigo
     def player_die(self):
         if self.cont == self.SCORE:
-            arcade.pause(0.5)
+            sleep(0.5)
             super().player.player_initial_tile = 4, 1
             super().physics_engine.update()
+            self.init_items()
+            self.init_enemies()
+            self.init_world()
+            self.score_coins = 0
             self.player_life -= 1
             self.cont = 0
 
