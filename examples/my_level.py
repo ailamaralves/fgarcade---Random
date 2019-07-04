@@ -18,6 +18,7 @@ class Game(ge.Platformer):
     viewport_margin_vertical = 120
    
     def init_world(self):
+
         # Inicio, Fim e chão
         self.create_tower(10, 2, coords=(0, 1))
         self.create_ground(self.final, coords=(0, 0), smooth_ends=True)
@@ -27,7 +28,6 @@ class Game(ge.Platformer):
         #self.create_platform(1, coords=(20, 90))
 
         # Cenário
-       
         self.moving_platform_list = SpriteList()
         platform = self.create_object('tile/blue/gs', (6, 3), at=self.moving_platform_list, role=Role.OBJECT)
 
@@ -51,6 +51,7 @@ class Game(ge.Platformer):
 
         # Spikes
         self.spikes = SpriteList()
+
         # Criei uma função para criar os espinhos. Ela recebe 3 argumentos: o "comprimento" dos espinhos, o X inicial e o Y
         create_spike(7, 17, 1)
         create_spike(23, 29, 1)
@@ -78,7 +79,7 @@ class Game(ge.Platformer):
             enemy = self.create_object('enemy/enemyFloating_1', (x, y), at=self.enemies)
             self.enemies.append(enemy)
 
-               # Criei uma função para criar os inimigos daod as coordenadas X e Y
+        # Criei uma função para criar os inimigos daod as coordenadas X e Y
         create_enemy(10, 7)
         create_enemy(21, 10)
         create_enemy(34, 4)
