@@ -1,5 +1,5 @@
 import fgarcade as ge
-from arcade import SpriteList, Sprite
+from arcade import SpriteList, Sprite, ShapeElementList
 from fgarcade.assets import get_sprite_path 
 from random import randint
 import arcade

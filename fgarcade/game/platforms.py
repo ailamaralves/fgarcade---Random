@@ -253,7 +253,7 @@ class HasPlatformsMixin(GameWindow):
         x, y = self.tile_to_position(*coords)
         x = int(x + 32)
         y = int(y + sprite.height / 2)
-        sprite.position = (x, y)
+        sprite.position = [x, y]
         if at is None:
             self.__append(sprite)
         else:
