@@ -29,7 +29,9 @@ class Game(ge.Platformer):
 
         # Cenário
         self.moving_platform_list = SpriteList()
-        platform = self.create_object('tile/blue/gs', (6, 3), at=self.moving_platform_list, role=Role.OBJECT)
+        platform = self.create_object('tile/blue/gl', (6, 3), at=self.moving_platform_list, role=Role.OBJECT)
+        platform = self.create_object('tile/blue/g', (7, 3), at=self.moving_platform_list, role=Role.OBJECT)
+        platform = self.create_object('tile/blue/gr', (8, 3), at=self.moving_platform_list, role=Role.OBJECT)
 
         def create_spike(tam, x, y):
             for i in range(tam):
@@ -52,7 +54,6 @@ class Game(ge.Platformer):
         # Spikes
         self.spikes = SpriteList()
 
-        # Criei uma função para criar os espinhos. Ela recebe 3 argumentos: o "comprimento" dos espinhos, o X inicial e o Y
         create_spike(7, 17, 1)
         create_spike(23, 29, 1)
         create_spike(14, 59, 1)
@@ -111,8 +112,7 @@ class Game(ge.Platformer):
         create_coin(14, 5, 3)
         create_coin(12, 10, 3)
         create_coin(20, 10, 3)
-        create_coin(24, 3, 2)
-        
+        create_coin(24, 3, 2)       
 
         self.items = SpriteList()
 
@@ -154,7 +154,6 @@ class Game(ge.Platformer):
     # Função para quando o player morrer
     # É chamada quando o player colide com um espinho ou um inimigo
     def player_die(self):
-
         if self.cont == self.SCORE:
             sleep(0.5)
             super().player.player_initial_tile = 4, 1
@@ -165,6 +164,7 @@ class Game(ge.Platformer):
             self.score_coins = 0
             self.player_life -= 1
             self.cont = 0
+
     def game_over(self, dt):
         pass
         
@@ -197,7 +197,6 @@ class Game(ge.Platformer):
         arcade.draw_text(output_life, 3890, 20, arcade.color.BLACK, 20)
         arcade.draw_text(f"Score: {self.score_coins}", 5550, 980, arcade.color.BLACK, 20)
         arcade.draw_text(output_life, 5550, 940, arcade.color.BLACK, 20)
-
 
 if __name__ == "__main__":
     Game().run()
