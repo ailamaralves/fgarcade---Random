@@ -187,22 +187,21 @@ class Game(ge.Platformer):
             self.player.jump += 50
 
     def player_die(self):
-        pass
-        # if self.cont == self.SCORE:
-        #   sleep(0.5)
-        #   super().player.player_initial_tile = 4, 1
-        #   del self.physics_engine
-        #   self.init_items()
-        #   self.init_enemies()
-        #   self.init_world()
-        #   self.score_coins = 0
-        #   self.player_life -= 1
-        #   self.cont = 0
+        if self.cont == self.SCORE:
+          sleep(0.5)
+          super().player.player_initial_tile = 4, 1
+          del self.physics_engine
+          self.init_items()
+          self.init_enemies()
+          self.init_world()
+          self.score_coins = 0
+          self.player_life -= 1
+          self.cont = 0
 
     def game_over(self, dt):
         pass
 
-    def can_collision(self, name, collision):
+    def can_move(self, name, collision):
         check_hit = []
 
         for limit in name:
@@ -215,7 +214,7 @@ class Game(ge.Platformer):
         return False
         
     def move_platforms(self, dt):
-        check = self.can_collision(self.limit_of_moving, self.moving_platform_list)
+        check = self.can_move(self.limit_of_moving, self.moving_platform_list)
         cont = 3
 
         for platform in self.moving_platform_list:
