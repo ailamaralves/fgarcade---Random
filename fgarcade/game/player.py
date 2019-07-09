@@ -86,6 +86,7 @@ class Player(AnimatedWalkingSprite):
 
     #: Player options
     jump_cooldown = 0.125
+    jump = 10
     last_time_jumped = -float('inf')
 
     #: Commands bound to movement actions such as go left, right and jump
@@ -158,7 +159,7 @@ class Player(AnimatedWalkingSprite):
 
         max_speed = 4.5
         delta = 1.25 if can_jump else 0.5
-        jump = 10
+        jump = self.jump
         go_left = commands & self.command_left
         go_right = commands & self.command_right
         change_x *= 0.95

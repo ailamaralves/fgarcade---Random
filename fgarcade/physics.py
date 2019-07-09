@@ -20,9 +20,14 @@ class PhysicsEnginePlatformer(arcade.PhysicsEnginePlatformer):
         the player_sprite. If there is a floor, the player can jump
         and we return a True.
         """
+        
+        vy = self.player_sprite.change_y
+        return vy == 0
+        
         self.player_sprite.center_y -= 2
         bottom = self.player_sprite.bottom
         top = self.player_sprite.top
+
         hit_list = arcade.check_for_collision_with_list(self.player_sprite,
                                                         self.platforms)
         self.player_sprite.center_y += 2

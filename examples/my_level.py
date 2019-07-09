@@ -96,11 +96,11 @@ class Game(ge.Platformer):
             if args:
                 for i in range(args[0]):
                     coin = self.create_object('other/items/yellowGem', (x, y), at=self.coins)
-                    # self.coins.append(coin)
+                    self.coins.append(coin)
                     x += 1
             else:
                 coin = self.create_object('other/items/yellowGem', (x, y), at=self.coins)
-                # self.coins.append(coin)
+                self.coins.append(coin)
 
         #Coins
         create_coin(6, 4, 3)
@@ -159,10 +159,10 @@ class Game(ge.Platformer):
             self.player_die()
 
     def player_die(self):
-       if self.cont == self.SCORE:
+        if self.cont == self.SCORE:
           sleep(0.5)
           super().player.player_initial_tile = 4, 1
-          super().physics_engine.update()
+          del self.physics_engine
           self.init_items()
           self.init_enemies()
           self.init_world()
@@ -188,8 +188,8 @@ class Game(ge.Platformer):
         self.collide_coins(dt)
         self.collide_spikes(dt)
         self.collide_enemies(dt)
-        self.move_platforms(dt)
         self.move_enemies(dt)
+        self.move_platforms(dt)
         self.game_over(dt)
             
     def draw_elements(self):
@@ -200,17 +200,17 @@ class Game(ge.Platformer):
         self.enemies_moving_list.draw()
         self.moving_platform_list.draw()
         
-        #Placar de Contagem das moedas
+        #Placar de Contagem das moedas e vidas
         output_score = f"Score: {self.score_coins} ||"
         output_life = f"Life: {self.player_life}"
-        arcade.draw_text(output_score, 10, 20, arcade.color.BLACK, 20)
-        arcade.draw_text(output_life, 200, 20, arcade.color.BLACK, 20)
-        arcade.draw_text(output_score, 1850, 20, arcade.color.BLACK, 20)
-        arcade.draw_text(output_life, 2040, 20, arcade.color.BLACK, 20)
-        arcade.draw_text(output_score, 3700, 20, arcade.color.BLACK, 20)
-        arcade.draw_text(output_life, 3890, 20, arcade.color.BLACK, 20)
-        arcade.draw_text(f"Score: {self.score_coins}", 5550, 980, arcade.color.BLACK, 20)
-        arcade.draw_text(output_life, 5550, 940, arcade.color.BLACK, 20)
+        arcade.draw_text(output_score, self.viewport_horizontal_start, self.viewport_vertical_start + 20, arcade.color.BLACK, 20)
+        arcade.draw_text(output_life, self.viewport_horizontal_start + 200, self.viewport_vertical_start + 20, arcade.color.BLACK, 20)
+        # arcade.draw_text(output_score, 1850, 20, arcade.color.BLACK, 20)
+        # arcade.draw_text(output_life, 2040, 20, arcade.color.BLACK, 20)
+        # arcade.draw_text(output_score, 3700, 20, arcade.color.BLACK, 20)
+        # arcade.draw_text(output_life, 3890, 20, arcade.color.BLACK, 20)
+        # arcade.draw_text(f"Score: {self.score_coins}", 5550, 980, arcade.color.BLACK, 20)
+        # arcade.draw_text(output_life, 5550, 940, arcade.color.BLACK, 20)
 
 if __name__ == "__main__":
     Game().run()
