@@ -16,6 +16,7 @@ class Game(ge.Platformer):
     SCORE = 2
     viewport_margin_horizontal = 500
     viewport_margin_vertical = 120
+    LIMIT = 3
    
     def init_world(self):
 
@@ -29,9 +30,9 @@ class Game(ge.Platformer):
 
         # Cenário
         self.moving_platform_list = SpriteList()
-        platform = self.create_object('tile/blue/gl', (6, 3), at=self.moving_platform_list, role=Role.OBJECT)
-        platform = self.create_object('tile/blue/g', (7, 3), at=self.moving_platform_list, role=Role.OBJECT)
-        platform = self.create_object('tile/blue/gr', (8, 3), at=self.moving_platform_list, role=Role.OBJECT)
+        platform = self.create_object('tile/blue/gl', (34, 3), at=self.moving_platform_list, role=Role.OBJECT)
+        platform = self.create_object('tile/blue/g', (35, 3), at=self.moving_platform_list, role=Role.OBJECT)
+        platform = self.create_object('tile/blue/gr', (36, 3), at=self.moving_platform_list, role=Role.OBJECT)
 
         def create_spike(tam, x, y):
             for i in range(tam):
@@ -46,8 +47,8 @@ class Game(ge.Platformer):
 
 
         for pt in [(3, (6, 3)), (3, (9,6)), (3, (12, 9)),
-                   (3, (20, 9)), (1, (20, 3)), (3, (33, 3)),
-                   (3, (62, 5)), (3, (67, 3))]:
+                   (3, (20, 9)), (1, (20, 3)), (3, (62, 5)), 
+                   (3, (67, 3))]:
             s, l = pt
             self.create_platform(s, l)
 
@@ -81,7 +82,11 @@ class Game(ge.Platformer):
         self.background_fixed = SpriteList(use_spatial_hash=False)
         self.background_fixed.append(Sprite(get_sprite_path('background/bg1')))
 
-
+    # Limite da Plataforma que anda
+    def limit_of_platforms(self):
+        self.limit_of_moving = SpriteList(is_static=True)
+        limit = self.create_object('other/block/brown', (30, 3), at=self.limit_of_moving)
+        limit = self.create_object('other/block/brown', (50, 3), at=self.limit_of_moving)
 
     def init_enemies(self):
         self.enemies = SpriteList(is_static=True)
@@ -135,9 +140,11 @@ class Game(ge.Platformer):
         self.init_world()
         self.init_items()
         self.init_enemies()
+        self.limit_of_platforms()
         self.score_coins = int(0)
         self.cont = int(0)
         self.player_life = int(4)
+        self.move = int(2)
 
     def collide_coins(self, dt):
         self.coins.update()
@@ -174,30 +181,49 @@ class Game(ge.Platformer):
     def collide_discs(self, dt):
         self.discs.update()
         discs_hit_list = arcade.check_for_collision_with_list(self.player, self.discs)
+
         for disc in discs_hit_list:
             disc.remove_from_sprite_lists()
             self.player.jump += 50
 
     def player_die(self):
-        if self.cont == self.SCORE:
-          sleep(0.5)
-          super().player.player_initial_tile = 4, 1
-          del self.physics_engine
-          self.init_items()
-          self.init_enemies()
-          self.init_world()
-          self.score_coins = 0
-          self.player_life -= 1
-          self.cont = 0
+        pass
+        # if self.cont == self.SCORE:
+        #   sleep(0.5)
+        #   super().player.player_initial_tile = 4, 1
+        #   del self.physics_engine
+        #   self.init_items()
+        #   self.init_enemies()
+        #   self.init_world()
+        #   self.score_coins = 0
+        #   self.player_life -= 1
+        #   self.cont = 0
 
     def game_over(self, dt):
         pass
+
+    def can_collision(self, name, collision):
+        check_hit = []
+
+        for limit in name:
+            hit = arcade.check_for_collision_with_list(limit, collision)
+            check_hit.append(hit)
+
+        for hit in check_hit:
+            if hit:
+                return True
+        return False
         
     def move_platforms(self, dt):
-        hit_list = arcade.check_for_collision_with_list(self.player, self.moving_platform_list)
+        check = self.can_collision(self.limit_of_moving, self.moving_platform_list)
+        cont = 3
 
         for platform in self.moving_platform_list:
-            platform.center_x += 2
+            if check and cont == self.LIMIT:
+                self.move *= (-1)
+                cont = 0
+            platform.center_x += self.move
+        cont = 3
 
     def move_enemies(self, dt):
         for enemie in self.enemies_moving_list:
