@@ -25,7 +25,7 @@ class Game(ge.Platformer):
         self.create_tower(10, coords=(self.final - 1, 1))
 
         # Plataforma para fazer a camera acompanhar o jogador em qualquer altura
-        #self.create_platform(1, coords=(20, 90))
+        self.create_platform(1, coords=(20, 90))
 
         # Cenário
         self.moving_platform_list = SpriteList()
@@ -38,6 +38,12 @@ class Game(ge.Platformer):
                 spike = self.create_object('other/spikes/spikes-high', (x, y), at=self.spikes)
                 # self.spikes.append(spike)
                 x += 1
+        
+        self.discs = SpriteList()        
+
+        def create_disc(x, y):
+             disc = self.create_object('other/items/discGreen', (x, y), at=self.discs)
+
 
         for pt in [(3, (6, 3)), (3, (9,6)), (3, (12, 9)),
                    (3, (20, 9)), (1, (20, 3)), (3, (33, 3)),
@@ -58,6 +64,11 @@ class Game(ge.Platformer):
         create_spike(23, 29, 1)
         create_spike(14, 59, 1)
 
+        # Discs
+        create_disc(5, 4)
+        create_disc(8, 7)
+        create_disc(11, 10)
+
         # Foreground
         self.create_arrow('right', (3, 1))
         self.create_fence('left', (52, 3))
@@ -69,6 +80,8 @@ class Game(ge.Platformer):
         self.background_near = SpriteList(use_spatial_hash=False)
         self.background_fixed = SpriteList(use_spatial_hash=False)
         self.background_fixed.append(Sprite(get_sprite_path('background/bg1')))
+
+
 
     def init_enemies(self):
         self.enemies = SpriteList(is_static=True)
@@ -158,6 +171,13 @@ class Game(ge.Platformer):
             self.cont += 1
             self.player_die()
 
+    def collide_discs(self, dt):
+        self.discs.update()
+        discs_hit_list = arcade.check_for_collision_with_list(self.player, self.discs)
+        for disc in discs_hit_list:
+            disc.remove_from_sprite_lists()
+            self.player.jump += 50
+
     def player_die(self):
         if self.cont == self.SCORE:
           sleep(0.5)
@@ -189,6 +209,7 @@ class Game(ge.Platformer):
         self.collide_spikes(dt)
         self.collide_enemies(dt)
         self.move_enemies(dt)
+        self.collide_discs(dt)
         self.move_platforms(dt)
         self.game_over(dt)
             
@@ -199,18 +220,13 @@ class Game(ge.Platformer):
         self.spikes.draw()
         self.enemies_moving_list.draw()
         self.moving_platform_list.draw()
-        
+        self.discs.draw()
+     
         #Placar de Contagem das moedas e vidas
         output_score = f"Score: {self.score_coins} ||"
         output_life = f"Life: {self.player_life}"
         arcade.draw_text(output_score, self.viewport_horizontal_start, self.viewport_vertical_start + 20, arcade.color.BLACK, 20)
         arcade.draw_text(output_life, self.viewport_horizontal_start + 200, self.viewport_vertical_start + 20, arcade.color.BLACK, 20)
-        # arcade.draw_text(output_score, 1850, 20, arcade.color.BLACK, 20)
-        # arcade.draw_text(output_life, 2040, 20, arcade.color.BLACK, 20)
-        # arcade.draw_text(output_score, 3700, 20, arcade.color.BLACK, 20)
-        # arcade.draw_text(output_life, 3890, 20, arcade.color.BLACK, 20)
-        # arcade.draw_text(f"Score: {self.score_coins}", 5550, 980, arcade.color.BLACK, 20)
-        # arcade.draw_text(output_life, 5550, 940, arcade.color.BLACK, 20)
 
 if __name__ == "__main__":
     Game().run()
