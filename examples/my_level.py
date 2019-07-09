@@ -35,8 +35,8 @@ class Game(ge.Platformer):
 
         def create_spike(tam, x, y):
             for i in range(tam):
-                spike = self.create_object('other/spikes/spikes-high', (x, y))
-                self.spikes.append(spike)
+                spike = self.create_object('other/spikes/spikes-high', (x, y), at=self.spikes)
+                # self.spikes.append(spike)
                 x += 1
 
         for pt in [(3, (6, 3)), (3, (9,6)), (3, (12, 9)),
@@ -70,22 +70,24 @@ class Game(ge.Platformer):
         self.background_fixed = SpriteList(use_spatial_hash=False)
         self.background_fixed.append(Sprite(get_sprite_path('background/bg1')))
 
-    def mov_platform(self):
-        pass
-
     def init_enemies(self):
         self.enemies = SpriteList(is_static=True)
+        self.enemies_moving_list = SpriteList(is_static=False)
 
-        def create_enemy(x, y):
-            enemy = self.create_object('enemy/enemyFloating_1', (x, y), at=self.enemies)
-            self.enemies.append(enemy)
+        def create_enemy(x, y, condition):
+            if condition:
+                enemy = self.create_object('enemy/enemySwimming_1', (x, y), at=self.enemies_moving_list)
+                # self.enemies_moving_list.append(enemy)
+            else:
+                enemy = self.create_object('enemy/enemyFloating_1', (x, y), at=self.enemies)
+                # self.enemies.append(enemy)
 
-        create_enemy(10, 7)
-        create_enemy(21, 10)
-        create_enemy(34, 4)
-        create_enemy(40, 4)
-        create_enemy(46, 4)
-        create_enemy(72, 6)
+        create_enemy(10, 7, True)
+        create_enemy(21, 10, False)
+        create_enemy(34, 4, False)
+        create_enemy(40, 4, False)
+        create_enemy(46, 4, False)
+        create_enemy(72, 6, False)
 
     def init_items(self):
         self.coins = SpriteList()
@@ -94,14 +96,13 @@ class Game(ge.Platformer):
             if args:
                 for i in range(args[0]):
                     coin = self.create_object('other/items/yellowGem', (x, y), at=self.coins)
-                    self.coins.append(coin)
+                    # self.coins.append(coin)
                     x += 1
             else:
                 coin = self.create_object('other/items/yellowGem', (x, y), at=self.coins)
-                self.coins.append(coin)
+                # self.coins.append(coin)
 
         #Coins
-        items = SpriteList()
         create_coin(6, 4, 3)
         create_coin(9, 7, 3)
         create_coin(12, 3, 2)
@@ -147,8 +148,13 @@ class Game(ge.Platformer):
     def collide_enemies(self, dt):
         self.enemies.update()
         enemies_hit_list = arcade.check_for_collision_with_list(self.player, self.enemies)
+        moving_enemies_hit_list = arcade.check_for_collision_with_list(self.player, self.enemies_moving_list)
 
         for enemie in enemies_hit_list:
+            self.cont += 1
+            self.player_die()
+
+        for enemie in moving_enemies_hit_list:
             self.cont += 1
             self.player_die()
 
@@ -173,18 +179,25 @@ class Game(ge.Platformer):
         for platform in self.moving_platform_list:
             platform.center_x += 2
 
+    def move_enemies(self, dt):
+        for enemie in self.enemies_moving_list:
+            enemie.center_x += 2
+
     def on_update(self, dt):
         super().on_update(dt)
         self.collide_coins(dt)
         self.collide_spikes(dt)
         self.collide_enemies(dt)
         self.move_platforms(dt)
+        self.move_enemies(dt)
         self.game_over(dt)
             
     def draw_elements(self):
         super().draw_elements()
         self.enemies.draw()
         self.coins.draw()
+        self.spikes.draw()
+        self.enemies_moving_list.draw()
         self.moving_platform_list.draw()
         
         #Placar de Contagem das moedas
