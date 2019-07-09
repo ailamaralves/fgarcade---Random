@@ -80,7 +80,6 @@ class Game(ge.Platformer):
             enemy = self.create_object('enemy/enemyFloating_1', (x, y), at=self.enemies)
             self.enemies.append(enemy)
 
-        # Criei uma função para criar os inimigos daod as coordenadas X e Y
         create_enemy(10, 7)
         create_enemy(21, 10)
         create_enemy(34, 4)
@@ -101,9 +100,6 @@ class Game(ge.Platformer):
                 coin = self.create_object('other/items/yellowGem', (x, y), at=self.coins)
                 self.coins.append(coin)
 
-        # Função para criar as moedas. Ela recebe 3 argumentos:
-        # o X, o Y e, caso precise, para plataformas, etc..., a quantidade de moedas
-
         #Coins
         items = SpriteList()
         create_coin(6, 4, 3)
@@ -112,7 +108,12 @@ class Game(ge.Platformer):
         create_coin(14, 5, 3)
         create_coin(12, 10, 3)
         create_coin(20, 10, 3)
-        create_coin(24, 3, 2)       
+        create_coin(24, 3, 2)
+        create_coin(26, 5, 3)
+        create_coin(33, 4, 3)
+        create_coin(39, 4, 3)
+        create_coin(45, 4, 3)
+        create_coin(54, 6, 3)
 
         self.items = SpriteList()
 
@@ -151,24 +152,24 @@ class Game(ge.Platformer):
             self.cont += 1
             self.player_die()
 
-    # Função para quando o player morrer
-    # É chamada quando o player colide com um espinho ou um inimigo
     def player_die(self):
-        if self.cont == self.SCORE:
-            sleep(0.5)
-            super().player.player_initial_tile = 4, 1
-            super().physics_engine.update()
-            self.init_items()
-            self.init_enemies()
-            self.init_world()
-            self.score_coins = 0
-            self.player_life -= 1
-            self.cont = 0
+       if self.cont == self.SCORE:
+          sleep(0.5)
+          super().player.player_initial_tile = 4, 1
+          super().physics_engine.update()
+          self.init_items()
+          self.init_enemies()
+          self.init_world()
+          self.score_coins = 0
+          self.player_life -= 1
+          self.cont = 0
 
     def game_over(self, dt):
         pass
         
     def move_platforms(self, dt):
+        hit_list = arcade.check_for_collision_with_list(self.player, self.moving_platform_list)
+
         for platform in self.moving_platform_list:
             platform.center_x += 2
 
