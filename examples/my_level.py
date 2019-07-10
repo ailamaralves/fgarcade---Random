@@ -166,10 +166,10 @@ class Game(ge.Platformer):
         self.init_items()
         self.init_enemies()
         self.limit_of_platforms()
-        self.score_coins = int(0)
-        self.cont = int(0)
-        self.player_life = int(4)
-        self.move = int(2)
+        self.score_coins = 0
+        self.cont = 0
+        self.player_life = 4
+        self.move = 2
 
     def collide_coins(self, dt):
         self.coins.update()
@@ -226,7 +226,7 @@ class Game(ge.Platformer):
     def game_over(self, dt):
         pass
 
-    def can_move(self, name, collision):
+    def object_can_move(self, name, collision):
         check_hit = []
 
         for limit in name:
@@ -239,7 +239,7 @@ class Game(ge.Platformer):
         return False
         
     def move_platforms(self, dt):
-        check = self.can_move(self.limit_of_moving, self.moving_platform_list)
+        check = self.object_can_move(self.limit_of_moving, self.moving_platform_list)
         cont = 3
 
         for platform in self.moving_platform_list:
