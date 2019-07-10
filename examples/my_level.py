@@ -76,7 +76,6 @@ class Game(ge.Platformer):
         create_disc(8, 7)
         create_disc(11, 10)
         create_disc(20, 4)
-        create_disc(86, 2)
         create_disc(86, 4)
         create_disc(86, 6)
 
@@ -102,6 +101,12 @@ class Game(ge.Platformer):
         self.background_near = SpriteList(use_spatial_hash=False)
         self.background_fixed = SpriteList(use_spatial_hash=False)
         self.background_fixed.append(Sprite(get_sprite_path('background/bg1')))
+
+    # Limite da Plataforma que anda
+    def limit_of_platforms(self):
+        self.limit_of_moving = SpriteList(is_static=True)
+        limit = self.create_object('other/block/brown', (30, 3), at=self.limit_of_moving)
+        limit = self.create_object('other/block/brown', (50, 3), at=self.limit_of_moving)
 
     def init_enemies(self):
         self.enemies = SpriteList(is_static=True)
@@ -148,6 +153,8 @@ class Game(ge.Platformer):
         create_coin(39, 4, 3)
         create_coin(45, 4, 3)
         create_coin(54, 6, 3)
+        create_coin(62, 6, 3)
+        create_coin(67, 4, 3)
         create_coin(78, 1, 3)
         create_coin(81, 1, 3)
         create_coin(84, 1, 3)
