@@ -14,8 +14,9 @@ class Game(ge.Platformer):
 
     final = 90
     SCORE = 2
-    viewport_margin_horizontal = 200
-    viewport_margin_vertical = 200
+    viewport_margin_horizontal = 500
+    viewport_margin_vertical = 120
+    LIMIT = 3
    
     def init_world(self):
 
@@ -28,9 +29,9 @@ class Game(ge.Platformer):
 
         # Cenário
         self.moving_platform_list = SpriteList()
-        platform = self.create_object('tile/blue/gl', (6, 3), at=self.moving_platform_list, role=Role.OBJECT)
-        platform = self.create_object('tile/blue/g', (7, 3), at=self.moving_platform_list, role=Role.OBJECT)
-        platform = self.create_object('tile/blue/gr', (8, 3), at=self.moving_platform_list, role=Role.OBJECT)
+        platform = self.create_object('tile/blue/gl', (34, 3), at=self.moving_platform_list, role=Role.OBJECT)
+        platform = self.create_object('tile/blue/g', (35, 3), at=self.moving_platform_list, role=Role.OBJECT)
+        platform = self.create_object('tile/blue/gr', (36, 3), at=self.moving_platform_list, role=Role.OBJECT)
 
         def create_spike(tam, x, y):
             for i in range(tam):
@@ -50,8 +51,8 @@ class Game(ge.Platformer):
             doortop = self.create_object('other/door/doorRed_top', (x, y), at=self.doortop)
 
         for pt in [(3, (6, 3)), (3, (9,6)), (3, (12, 9)),
-                   (3, (20, 9)), (1, (20, 3)), (3, (33, 3)),
-                   (3, (62, 5)), (3, (67, 3))]:
+                   (3, (20, 9)), (1, (20, 3)), (3, (62, 5)), 
+                   (3, (67, 3))]:
             s, l = pt
             self.create_platform(s, l)
 
@@ -157,9 +158,11 @@ class Game(ge.Platformer):
         self.init_world()
         self.init_items()
         self.init_enemies()
+        self.limit_of_platforms()
         self.score_coins = int(0)
         self.cont = int(0)
         self.player_life = int(4)
+        self.move = int(2)
 
     def collide_coins(self, dt):
         self.coins.update()
@@ -172,13 +175,13 @@ class Game(ge.Platformer):
                 self.score_coins += 10
                 i = 0
 
-    #def collide_spikes(self, dt):
-    #    self.spikes.update()
-    #    spikes_hit_list = arcade.check_for_collision_with_list(self.player, self.spikes)
-    #
-    #    for spike in spikes_hit_list:
-    #        self.cont += 1
-    #        self.player_die()
+    def collide_spikes(self, dt):
+        self.spikes.update()
+        spikes_hit_list = arcade.check_for_collision_with_list(self.player, self.spikes)
+    
+        for spike in spikes_hit_list:
+            self.cont += 1
+            self.player_die()
 
     def collide_enemies(self, dt):
         self.enemies.update()
@@ -196,6 +199,7 @@ class Game(ge.Platformer):
     def collide_discs(self, dt):
         self.discs.update()
         discs_hit_list = arcade.check_for_collision_with_list(self.player, self.discs)
+
         for disc in discs_hit_list:
             disc.remove_from_sprite_lists()
             self.player.jump += 50
@@ -214,12 +218,29 @@ class Game(ge.Platformer):
 
     def game_over(self, dt):
         pass
+
+    def can_move(self, name, collision):
+        check_hit = []
+
+        for limit in name:
+            hit = arcade.check_for_collision_with_list(limit, collision)
+            check_hit.append(hit)
+
+        for hit in check_hit:
+            if hit:
+                return True
+        return False
         
     def move_platforms(self, dt):
-        hit_list = arcade.check_for_collision_with_list(self.player, self.moving_platform_list)
+        check = self.can_move(self.limit_of_moving, self.moving_platform_list)
+        cont = 3
 
         for platform in self.moving_platform_list:
-            platform.center_x += 2
+            if check and cont == self.LIMIT:
+                self.move *= (-1)
+                cont = 0
+            platform.center_x += self.move
+        cont = 3
 
     def move_enemies(self, dt):
         for enemie in self.enemies_moving_list:
