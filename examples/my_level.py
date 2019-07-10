@@ -14,15 +14,14 @@ class Game(ge.Platformer):
 
     final = 90
     SCORE = 2
-    viewport_margin_horizontal = 500
-    viewport_margin_vertical = 120
+    viewport_margin_horizontal = 200
+    viewport_margin_vertical = 200
    
     def init_world(self):
 
-        # Inicio, Fim e chão
+        # Inicio e chão
         self.create_tower(10, 2, coords=(0, 1))
         self.create_ground(self.final, coords=(0, 0), smooth_ends=True)
-        self.create_tower(10, coords=(self.final - 1, 1))
 
         # Plataforma para fazer a camera acompanhar o jogador em qualquer altura
         self.create_platform(1, coords=(20, 90))
@@ -43,7 +42,12 @@ class Game(ge.Platformer):
 
         def create_disc(x, y):
              disc = self.create_object('other/items/discGreen', (x, y), at=self.discs)
+        
+        def create_door_key(x, y):
+            doorkey = self.create_object('other/door/doorRed_lock', (x, y), at=self.doorkey)
 
+        def create_door_top(x, y):
+            doortop = self.create_object('other/door/doorRed_top', (x, y), at=self.doortop)
 
         for pt in [(3, (6, 3)), (3, (9,6)), (3, (12, 9)),
                    (3, (20, 9)), (1, (20, 3)), (3, (33, 3)),
@@ -53,9 +57,12 @@ class Game(ge.Platformer):
 
         for pt in [(2, 3, (12, 1)), (4, 3, (14, 1)), (2, 3, (24, 1)),
                    (4, 3, (26, 1)), (2, 3, (52, 1)), (2, 3, (56, 1)),
-                   (5, 3, (54, 1)), (2, 3, (75, 1)), (5, 3, (73, 1))]:
+                   (5, 3, (54, 1)), (2, 3, (75, 1)), (5, 3, (73, 1)), (7, 3, (87, 1))]:
             x, y, w = pt
             self.create_tower(x, y, w)
+
+        # Final tower
+        self.create_tower(10, coords=(self.final - 1, 1))
 
         # Spikes
         self.spikes = SpriteList()
@@ -65,9 +72,20 @@ class Game(ge.Platformer):
         create_spike(14, 59, 1)
 
         # Discs
-        create_disc(5, 4)
         create_disc(8, 7)
         create_disc(11, 10)
+        create_disc(20, 4)
+        create_disc(86, 2)
+        create_disc(86, 4)
+        create_disc(86, 6)
+
+        # Door key
+        self.doorkey = SpriteList()  
+        create_door_key(88, 8)
+
+        # Door top
+        self.doortop = SpriteList()
+        create_door_top(88, 9)
 
         # Foreground
         self.create_arrow('right', (3, 1))
@@ -75,13 +93,14 @@ class Game(ge.Platformer):
         self.create_fence('right', (53, 3))
         self.create_fence('left', (57, 3))
         self.create_fence('left', (58, 3))
+        self.create_fence('left', (58, 3))
+        self.create_fence('left', (76, 3))
+        self.create_fence('right', (77, 3))
 
         # Background
         self.background_near = SpriteList(use_spatial_hash=False)
         self.background_fixed = SpriteList(use_spatial_hash=False)
         self.background_fixed.append(Sprite(get_sprite_path('background/bg1')))
-
-
 
     def init_enemies(self):
         self.enemies = SpriteList(is_static=True)
@@ -128,6 +147,9 @@ class Game(ge.Platformer):
         create_coin(39, 4, 3)
         create_coin(45, 4, 3)
         create_coin(54, 6, 3)
+        create_coin(78, 1, 3)
+        create_coin(81, 1, 3)
+        create_coin(84, 1, 3)
 
         self.items = SpriteList()
 
@@ -150,13 +172,13 @@ class Game(ge.Platformer):
                 self.score_coins += 10
                 i = 0
 
-    def collide_spikes(self, dt):
-        self.spikes.update()
-        spikes_hit_list = arcade.check_for_collision_with_list(self.player, self.spikes)
-
-        for spike in spikes_hit_list:
-            self.cont += 1
-            self.player_die()
+    #def collide_spikes(self, dt):
+    #    self.spikes.update()
+    #    spikes_hit_list = arcade.check_for_collision_with_list(self.player, self.spikes)
+    #
+    #    for spike in spikes_hit_list:
+    #        self.cont += 1
+    #        self.player_die()
 
     def collide_enemies(self, dt):
         self.enemies.update()
@@ -206,7 +228,7 @@ class Game(ge.Platformer):
     def on_update(self, dt):
         super().on_update(dt)
         self.collide_coins(dt)
-        self.collide_spikes(dt)
+        #self.collide_spikes(dt)
         self.collide_enemies(dt)
         self.move_enemies(dt)
         self.collide_discs(dt)
@@ -221,6 +243,8 @@ class Game(ge.Platformer):
         self.enemies_moving_list.draw()
         self.moving_platform_list.draw()
         self.discs.draw()
+        self.doorkey.draw()
+        self.doortop.draw()
      
         #Placar de Contagem das moedas e vidas
         output_score = f"Score: {self.score_coins} ||"
