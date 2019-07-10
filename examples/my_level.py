@@ -17,6 +17,7 @@ class Game(ge.Platformer):
     viewport_margin_horizontal = 500
     viewport_margin_vertical = 120
     LIMIT = 3
+    cal = False
    
     def init_world(self):
 
@@ -110,30 +111,41 @@ class Game(ge.Platformer):
 
     # Limite do inimigo que anda
     def limit_of_enemies(self):
-        self.limit_of_enemies_moving = SpriteList(is_static=True)
-        limit = self.create_object('other/block/brown', (30, 7), at=self.limit_of_enemies_moving)
-        limit = self.create_object('other/block/brown', (50, 7), at=self.limit_of_enemies_moving)
+        self.limit_of_enemies_moving_in_x = SpriteList(is_static=True)
+        limit = self.create_object('other/block/brown', (30, 7), at=self.limit_of_enemies_moving_in_x)
+        limit = self.create_object('other/block/brown', (50, 7), at=self.limit_of_enemies_moving_in_x)
+        # limit = self.create_object('other/block/brown', (30, 10), at=self.limit_of_enemies_moving_in_x)
+        # limit = self.create_object('other/block/brown', (60, 10), at=self.limit_of_enemies_moving_in_x)
+
+        self.limit_of_enemies_moving_in_y = SpriteList(is_static=True)
+        # limit = self.create_object('other/block/brown', (40, 12), at=self.limit_of_enemies_moving_in_y)
+        # limit = self.create_object('other/block/brown', (40, 4), at=self.limit_of_enemies_moving_in_y)
 
 
     def init_enemies(self):
         self.enemies = SpriteList(is_static=True)
-        self.moving_enemies_list = SpriteList(is_static=False)
+        self.moving_enemies_list_in_x = SpriteList(is_static=False)
+        self.moving_enemies_list_in_y = SpriteList(is_static=False)
 
-        def create_enemy(x, y, condition):
+        def create_enemy(x, y, condition, direction_x):
             if condition:
-                enemy = self.create_object('enemy/enemySwimming_1', (x, y), at=self.moving_enemies_list)
-                # self.enemies_moving_list.append(enemy)
+                if direction_x:
+                    enemy = self.create_object('enemy/enemySwimming_1', (x, y), at=self.moving_enemies_list_in_x)
+                    # self.enemies_moving_list.append(enemy)
+                else:
+                    enemy = self.create_object('enemy/enemyFloating_1', (x, y), at=self.moving_enemies_list_in_y)
             else:
                 enemy = self.create_object('enemy/enemyFloating_1', (x, y), at=self.enemies)
                 # self.enemies.append(enemy)
 
         # Parâmetro True caso seja um Inimigo que se move
-        create_enemy(35, 7, True)
-        create_enemy(21, 10, False)
-        create_enemy(34, 4, False)
-        create_enemy(40, 4, False)
-        create_enemy(46, 4, False)
-        create_enemy(72, 6, False)
+        create_enemy(35, 7, True, True)
+        create_enemy(35, 10, True, True)
+        create_enemy(21, 10, False, False)
+        create_enemy(34, 4, False, False)
+        create_enemy(40, 4, False, False)
+        create_enemy(46, 4, False, False)
+        create_enemy(72, 6, False, False)
 
     def init_items(self):
         self.coins = SpriteList()
@@ -178,8 +190,8 @@ class Game(ge.Platformer):
         self.score_coins = 0
         self.cont = 0
         self.player_life = 4
-        self.move_platform = 2
-        self.move_enemie = 4
+        self.move_platform = 3
+        self.move_enemie = 5
 
     def collide_coins(self, dt):
         self.coins.update()
@@ -203,13 +215,18 @@ class Game(ge.Platformer):
     def collide_enemies(self, dt):
         self.enemies.update()
         enemies_hit_list = arcade.check_for_collision_with_list(self.player, self.enemies)
-        moving_enemies_hit_list = arcade.check_for_collision_with_list(self.player, self.moving_enemies_list)
+        moving_enemies_in_x_hit_list = arcade.check_for_collision_with_list(self.player, self.moving_enemies_list_in_x)
+        moving_enemies_in_y_hit_list = arcade.check_for_collision_with_list(self.player, self.moving_enemies_list_in_y)
 
         for enemie in enemies_hit_list:
             self.cont += 1
             self.player_die()
 
-        for enemie in moving_enemies_hit_list:
+        for enemie in moving_enemies_in_x_hit_list:
+            self.cont += 1
+            self.player_die()
+
+        for enemie in moving_enemies_in_y_hit_list:
             self.cont += 1
             self.player_die()
 
@@ -251,28 +268,40 @@ class Game(ge.Platformer):
     def move_platforms(self, dt):
         check = self.object_can_move(self.limit_of_platform_moving, self.moving_platform_list)
         cont = 3
+        check_player = arcade.check_for_collision_with_list(self.player, self.moving_platform_list)
 
-        for platform in self.moving_platform_list:
-            if check and cont == self.LIMIT:
-                self.move_platform *= (-1)
-                cont = 0
-            platform.center_x += self.move_platform
-        cont = 3
+        if check_player or self.cal:
+            self.cal = True
+            for platform in self.moving_platform_list:
+                if check and cont == self.LIMIT:
+                    self.move_platform *= (-1)
+                    cont = 0
+                platform.center_x += self.move_platform
+            cont = 3
 
-    def move_enemies(self, dt):
-        check = self.object_can_move(self.limit_of_enemies_moving, self.moving_enemies_list)
+    def move_enemies_in_x(self, dt):
+        for enemie in self.moving_enemies_list_in_x:
+            check_in_x = arcade.check_for_collision_with_list(enemie, self.limit_of_enemies_moving_in_x)
 
-        for enemie in self.moving_enemies_list:
-            if check:
+            if check_in_x:
                 self.move_enemie *= (-1)
             enemie.center_x += self.move_enemie
+
+    def move_enemies_in_y(self, dt):
+        for enemie in self.moving_enemies_list_in_y:
+            check_in_y = arcade.check_for_collision_with_list(enemie, self.limit_of_enemies_moving_in_y)
+
+            if check_in_y:
+                self.move_enemie *= (-1)
+            enemie.center_y += self.move_enemie
 
     def on_update(self, dt):
         super().on_update(dt)
         self.collide_coins(dt)
         #self.collide_spikes(dt)
         self.collide_enemies(dt)
-        self.move_enemies(dt)
+        self.move_enemies_in_x(dt)
+        self.move_enemies_in_y(dt)
         self.collide_discs(dt)
         self.move_platforms(dt)
         self.game_over(dt)
@@ -282,7 +311,8 @@ class Game(ge.Platformer):
         self.enemies.draw()
         self.coins.draw()
         self.spikes.draw()
-        self.moving_enemies_list.draw()
+        self.moving_enemies_list_in_x.draw()
+        self.moving_enemies_list_in_y.draw()
         self.moving_platform_list.draw()
         self.discs.draw()
         self.doorkey.draw()
