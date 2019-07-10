@@ -14,8 +14,8 @@ class Game(ge.Platformer):
 
     final = 90
     SCORE = 2
-    viewport_margin_horizontal = 500
-    viewport_margin_vertical = 120
+    viewport_margin_horizontal = 400
+    viewport_margin_vertical = 300
     LIMIT = 3
     cal = False
    
@@ -74,11 +74,13 @@ class Game(ge.Platformer):
         create_spike(14, 59, 1)
 
         # Discs
-        create_disc(8, 7)
         create_disc(11, 10)
+        create_disc(21, 10)
         create_disc(20, 4)
-        create_disc(86, 4)
-        create_disc(86, 6)
+        create_disc(40, 4)
+        create_disc(40, 8)
+        #create_disc(86, 4)
+        #create_disc(86, 6)
 
         # Door key
         self.doorkey = SpriteList()  
@@ -141,9 +143,9 @@ class Game(ge.Platformer):
         # Parâmetro True caso seja um Inimigo que se move
         create_enemy(35, 7, True, True)
         create_enemy(35, 10, True, True)
-        create_enemy(21, 10, False, False)
+        #create_enemy(21, 10, False, False)
         create_enemy(34, 4, False, False)
-        create_enemy(40, 4, False, False)
+        #create_enemy(40, 4, False, False)
         create_enemy(46, 4, False, False)
         create_enemy(72, 6, False, False)
 
@@ -163,15 +165,17 @@ class Game(ge.Platformer):
         #Coins
         create_coin(6, 4, 3)
         create_coin(9, 7, 3)
-        create_coin(12, 3, 2)
         create_coin(14, 5, 3)
         create_coin(12, 10, 3)
         create_coin(20, 10, 3)
         create_coin(24, 3, 2)
         create_coin(26, 5, 3)
-        create_coin(33, 4, 3)
-        create_coin(39, 4, 3)
-        create_coin(45, 4, 3)
+        create_coin(33, 4, 1)
+        create_coin(35, 4, 1)
+        create_coin(39, 4, 1)
+        create_coin(41, 4, 1)
+        create_coin(45, 4, 1)
+        create_coin(47, 4, 1)
         create_coin(54, 6, 3)
         create_coin(62, 6, 3)
         create_coin(67, 4, 3)
@@ -292,7 +296,7 @@ class Game(ge.Platformer):
             check_in_y = arcade.check_for_collision_with_list(enemie, self.limit_of_enemies_moving_in_y)
 
             if check_in_y:
-                self.move_enemie *= (-1)
+                self.move_enemie *= (1)
             enemie.center_y += self.move_enemie
 
     def on_update(self, dt):
