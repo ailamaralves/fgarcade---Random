@@ -5,6 +5,7 @@ from random import randint
 import arcade
 from time import sleep
 from fgarcade.enums import Role
+import pyglet
 
 
 class Game(ge.Platformer):
@@ -18,8 +19,21 @@ class Game(ge.Platformer):
     viewport_margin_vertical = 300
     LIMIT = 3
     cal = False
-   
+
+    # SOUNDS
+    start_sound = pyglet.media.load('examples/sounds/start_sound.mp3')
+    coin_sound = arcade.load_sound('examples/sounds/coin.wav')
+    jump_sound = arcade.load_sound('examples/sounds/jump.wav')
+    disc_sound = arcade.load_sound('examples/sounds/disc.wav')
+    death_sound = arcade.load_sound('examples/sounds/death.wav')
+
+    level_sound = pyglet.media.Player()
+    level_sound.loop = True
+    level_sound.queue(start_sound)
+
     def init_world(self):
+
+        self.level_sound.play()
 
         # Inicio e chão
         self.create_tower(10, 2, coords=(0, 1))
@@ -204,6 +218,7 @@ class Game(ge.Platformer):
             if i == self.SCORE:
                 self.score_coins += 10
                 i = 0
+            arcade.play_sound(self.coin_sound)
 
     def collide_spikes(self, dt):
         self.spikes.update()
@@ -238,9 +253,11 @@ class Game(ge.Platformer):
         for disc in discs_hit_list:
             disc.remove_from_sprite_lists()
             self.player.jump += 50
+            arcade.play_sound(self.disc_sound)
 
     def player_die(self):
         if self.cont == self.SCORE:
+          arcade.play_sound(self.death_sound)
           sleep(0.5)
           super().player.player_initial_tile = 4, 1
           del self.physics_engine
@@ -306,6 +323,14 @@ class Game(ge.Platformer):
         self.collide_discs(dt)
         self.move_platforms(dt)
         self.game_over(dt)
+
+        # JUMP SOUND
+        if self.player.change_y > 0:
+            if not self.jumping:
+                arcade.play_sound(self.jump_sound)
+            self.jumping = True
+        else:
+            self.jumping = False
             
     def draw_elements(self):
         super().draw_elements()
