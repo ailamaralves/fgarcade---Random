@@ -264,7 +264,7 @@ class Game(ge.Platformer):
             self.cont = 0
 
     def game_over(self, dt):
-        pass
+        game.exit()
 
     def object_can_move(self, name, collision):
         check_hit = []
@@ -309,7 +309,7 @@ class Game(ge.Platformer):
             enemy.center_y += self.move_enemy
 
     def on_update(self, dt):
-        if self.player_life >= 0:
+        if self.player_life >= 1:
             super().on_update(dt)
             self.collide_coins(dt)
             self.collide_spikes(dt)
