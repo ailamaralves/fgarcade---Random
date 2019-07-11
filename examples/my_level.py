@@ -151,10 +151,12 @@ class Game(ge.Platformer):
         # Parâmetro True caso seja um Inimigo que se move
         create_enemy(35, 7, True, True)
         create_enemy(35, 10, True, True)
+        create_enemy(35, 8, True, True)
+        create_enemy(35, 9, True, True)
         #create_enemy(21, 10, False, False)
-        create_enemy(34, 4, False, False)
+        create_enemy(34, 6, True, False)
         #create_enemy(40, 4, False, False)
-        create_enemy(46, 4, False, False)
+        create_enemy(46, 6, True, False)
         create_enemy(72, 6, True, False)
         create_enemy(66, 6, True, False)
 
