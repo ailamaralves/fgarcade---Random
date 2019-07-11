@@ -21,7 +21,7 @@ class Game(ge.Platformer):
     cal = False
 
     # SOUNDS
-    start_sound = pyglet.media.load('examples/sounds/start_sound.mp3')
+    # start_sound = pyglet.media.load('examples/sounds/start_sound.mp3')
     coin_sound = arcade.load_sound('examples/sounds/coin.wav')
     jump_sound = arcade.load_sound('examples/sounds/jump.wav')
     disc_sound = arcade.load_sound('examples/sounds/disc.wav')
@@ -29,7 +29,7 @@ class Game(ge.Platformer):
 
     level_sound = pyglet.media.Player()
     level_sound.loop = True
-    level_sound.queue(start_sound)
+    # level_sound.queue(start_sound)
 
     def init_world(self):
 
@@ -87,7 +87,7 @@ class Game(ge.Platformer):
         create_spike(14, 59, 1)
 
         # Discs
-        create_disc(11, 10)
+        create_disc(31, 5)
         create_disc(21, 10)
         create_disc(20, 4)
         create_disc(40, 4)
@@ -159,6 +159,9 @@ class Game(ge.Platformer):
         create_enemy(46, 6, True, False)
         create_enemy(72, 6, True, False)
         create_enemy(66, 6, True, False)
+        create_enemy(18, 6, True, False)
+        create_enemy(23, 6, True, False)
+        create_enemy(60, 6, True, False)
 
     def init_items(self):
         self.coins = SpriteList()
@@ -316,15 +319,18 @@ class Game(ge.Platformer):
             enemy.center_y += self.move_enemy
 
     def on_update(self, dt):
-        super().on_update(dt)
-        self.collide_coins(dt)
-        # self.collide_spikes(dt)
-        self.collide_enemies(dt)
-        self.move_enemies_in_x(dt)
-        self.move_enemies_in_y(dt)
-        self.collide_discs(dt)
-        self.move_platforms(dt)
-        self.game_over(dt)
+        if self.player_life >= 0:
+            super().on_update(dt)
+            self.collide_coins(dt)
+            # self.collide_spikes(dt)
+            self.collide_enemies(dt)
+            self.move_enemies_in_x(dt)
+            self.move_enemies_in_y(dt)
+            self.collide_discs(dt)
+            self.move_platforms(dt)
+            self.game_over(dt)
+        else:
+            self.game_over(dt)
 
         # JUMP SOUND
         if self.player.change_y > 0:
