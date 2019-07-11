@@ -119,9 +119,10 @@ class Game(ge.Platformer):
         # limit = self.create_object('other/block/brown', (30, 10), at=self.limit_of_enemies_moving_in_x)
         # limit = self.create_object('other/block/brown', (60, 10), at=self.limit_of_enemies_moving_in_x)
 
+    def limit_enemies(self):
         self.limit_of_enemies_moving_in_y = SpriteList(is_static=True)
-        # limit = self.create_object('other/block/brown', (40, 12), at=self.limit_of_enemies_moving_in_y)
-        # limit = self.create_object('other/block/brown', (40, 4), at=self.limit_of_enemies_moving_in_y)
+        limit = self.create_object('other/block/green', (72, 10), at=self.limit_of_enemies_moving_in_y)
+        limit = self.create_object('other/block/green', (72, 2), at=self.limit_of_enemies_moving_in_y)
 
 
     def init_enemies(self):
@@ -135,7 +136,8 @@ class Game(ge.Platformer):
                     enemy = self.create_object('enemy/enemySwimming_1', (x, y), at=self.moving_enemies_list_in_x)
                     # self.enemies_moving_list.append(enemy)
                 else:
-                    enemy = self.create_object('enemy/enemyFloating_1', (x, y), at=self.moving_enemies_list_in_y)
+                    enemy = self.create_object('enemy/enemyFlyingAlt_1', (x, y), at=self.moving_enemies_list_in_y)
+                    # self.moving_enemies_list_in_y.append(enemy)
             else:
                 enemy = self.create_object('enemy/enemyFloating_1', (x, y), at=self.enemies)
                 # self.enemies.append(enemy)
@@ -147,7 +149,8 @@ class Game(ge.Platformer):
         create_enemy(34, 4, False, False)
         #create_enemy(40, 4, False, False)
         create_enemy(46, 4, False, False)
-        create_enemy(72, 6, False, False)
+        create_enemy(72, 6, True, False)
+        create_enemy(66, 6, True, False)
 
     def init_items(self):
         self.coins = SpriteList()
@@ -191,11 +194,13 @@ class Game(ge.Platformer):
         self.init_enemies()
         self.limit_of_platforms()
         self.limit_of_enemies()
+        self.limit_enemies()
         self.score_coins = 0
         self.cont = 0
         self.player_life = 4
         self.move_platform = 3
         self.move_enemie = 5
+        self.move_enemy = 5
 
     def collide_coins(self, dt):
         self.coins.update()
@@ -292,12 +297,12 @@ class Game(ge.Platformer):
             enemie.center_x += self.move_enemie
 
     def move_enemies_in_y(self, dt):
-        for enemie in self.moving_enemies_list_in_y:
-            check_in_y = arcade.check_for_collision_with_list(enemie, self.limit_of_enemies_moving_in_y)
+        for enemy in self.moving_enemies_list_in_y:
+            check_in_y = arcade.check_for_collision_with_list(enemy, self.limit_of_enemies_moving_in_y)
 
             if check_in_y:
-                self.move_enemie *= (1)
-            enemie.center_y += self.move_enemie
+                self.move_enemy *= (-1)
+            enemy.center_y += self.move_enemy
 
     def on_update(self, dt):
         super().on_update(dt)
@@ -325,8 +330,8 @@ class Game(ge.Platformer):
         #Placar de Contagem das moedas e vidas
         output_score = f"Score: {self.score_coins} ||"
         output_life = f"Life: {self.player_life}"
-        arcade.draw_text(output_score, self.viewport_horizontal_start, self.viewport_vertical_start + 20, arcade.color.BLACK, 20)
-        arcade.draw_text(output_life, self.viewport_horizontal_start + 200, self.viewport_vertical_start + 20, arcade.color.BLACK, 20)
+        arcade.draw_text(output_score, self.viewport_horizontal_start, self.viewport_vertical_start + 10, arcade.color.BLACK, 25)
+        arcade.draw_text(output_life, self.viewport_horizontal_start + 250, self.viewport_vertical_start + 10, arcade.color.BLACK, 25)
 
 if __name__ == "__main__":
     Game().run()
