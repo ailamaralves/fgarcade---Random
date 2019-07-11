@@ -37,7 +37,6 @@ class Game(ge.Platformer):
         def create_spike(tam, x, y):
             for i in range(tam):
                 spike = self.create_object('other/spikes/spikes-high', (x, y), at=self.spikes)
-                # self.spikes.append(spike)
                 x += 1
         
         self.discs = SpriteList()        
@@ -79,8 +78,6 @@ class Game(ge.Platformer):
         create_disc(20, 4)
         create_disc(40, 4)
         create_disc(40, 8)
-        #create_disc(86, 4)
-        #create_disc(86, 6)
 
         # Door key
         self.doorkey = SpriteList()  
@@ -116,8 +113,6 @@ class Game(ge.Platformer):
         self.limit_of_enemies_moving_in_x = SpriteList(is_static=True)
         limit = self.create_object('other/block/brown', (30, 7), at=self.limit_of_enemies_moving_in_x)
         limit = self.create_object('other/block/brown', (50, 7), at=self.limit_of_enemies_moving_in_x)
-        # limit = self.create_object('other/block/brown', (30, 10), at=self.limit_of_enemies_moving_in_x)
-        # limit = self.create_object('other/block/brown', (60, 10), at=self.limit_of_enemies_moving_in_x)
 
     def limit_enemies(self):
         self.limit_of_enemies_moving_in_y = SpriteList(is_static=True)
@@ -134,13 +129,10 @@ class Game(ge.Platformer):
             if condition:
                 if direction_x:
                     enemy = self.create_object('enemy/enemySwimming_1', (x, y), at=self.moving_enemies_list_in_x)
-                    # self.enemies_moving_list.append(enemy)
                 else:
                     enemy = self.create_object('enemy/enemyFlyingAlt_1', (x, y), at=self.moving_enemies_list_in_y)
-                    # self.moving_enemies_list_in_y.append(enemy)
             else:
                 enemy = self.create_object('enemy/enemyFloating_1', (x, y), at=self.enemies)
-                # self.enemies.append(enemy)
 
         # Parâmetro True caso seja um Inimigo que se move
         create_enemy(35, 7, True, True)
@@ -307,7 +299,7 @@ class Game(ge.Platformer):
     def on_update(self, dt):
         super().on_update(dt)
         self.collide_coins(dt)
-        #self.collide_spikes(dt)
+        # self.collide_spikes(dt)
         self.collide_enemies(dt)
         self.move_enemies_in_x(dt)
         self.move_enemies_in_y(dt)
