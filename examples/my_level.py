@@ -5,7 +5,6 @@ from random import randint
 import arcade
 from time import sleep
 from fgarcade.enums import Role
-import pyglet
 
 
 class Game(ge.Platformer):
@@ -21,19 +20,11 @@ class Game(ge.Platformer):
     cal = False
 
     # SOUNDS
-    # start_sound = pyglet.media.load('examples/sounds/start_sound.mp3')
     coin_sound = arcade.load_sound('examples/sounds/coin.wav')
     jump_sound = arcade.load_sound('examples/sounds/jump.wav')
     disc_sound = arcade.load_sound('examples/sounds/disc.wav')
-    death_sound = arcade.load_sound('examples/sounds/death.wav')
-
-    level_sound = pyglet.media.Player()
-    level_sound.loop = True
-    # level_sound.queue(start_sound)
 
     def init_world(self):
-
-        self.level_sound.play()
 
         # Inicio e chão
         self.create_tower(10, 2, coords=(0, 1))
@@ -87,7 +78,7 @@ class Game(ge.Platformer):
         create_spike(14, 59, 1)
 
         # Discs
-        create_disc(31, 5)
+        create_disc(63, 11)
         create_disc(21, 10)
         create_disc(20, 4)
         create_disc(40, 4)
@@ -262,16 +253,15 @@ class Game(ge.Platformer):
 
     def player_die(self):
         if self.cont == self.SCORE:
-          arcade.play_sound(self.death_sound)
-          sleep(0.5)
-          super().player.player_initial_tile = 4, 1
-          del self.physics_engine
-          self.init_items()
-          self.init_enemies()
-          self.init_world()
-          self.score_coins = 0
-          self.player_life -= 1
-          self.cont = 0
+            sleep(0.5)
+            super().player.player_initial_tile = 4, 1
+            del self.physics_engine
+            self.init_items()
+            self.init_enemies()
+            self.init_world()
+            self.score_coins = 0
+            self.player_life -= 1
+            self.cont = 0
 
     def game_over(self, dt):
         pass
@@ -322,13 +312,12 @@ class Game(ge.Platformer):
         if self.player_life >= 0:
             super().on_update(dt)
             self.collide_coins(dt)
-            # self.collide_spikes(dt)
+            self.collide_spikes(dt)
             self.collide_enemies(dt)
             self.move_enemies_in_x(dt)
             self.move_enemies_in_y(dt)
             self.collide_discs(dt)
             self.move_platforms(dt)
-            self.game_over(dt)
         else:
             self.game_over(dt)
 
