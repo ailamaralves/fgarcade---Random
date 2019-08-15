@@ -18,6 +18,7 @@ class Game(ge.Platformer):
     viewport_margin_vertical = 300
     LIMIT = 3
     cal = False
+    win = False
 
     # SOUNDS
     coin_sound = arcade.load_sound('examples/sounds/coin.wav')
@@ -145,14 +146,14 @@ class Game(ge.Platformer):
         create_enemy(35, 8, True, True)
         create_enemy(35, 9, True, True)
         #create_enemy(21, 10, False, False)
-        create_enemy(34, 6, True, False)
+        create_enemy(34, 3, True, False)
         #create_enemy(40, 4, False, False)
-        create_enemy(46, 6, True, False)
-        create_enemy(72, 6, True, False)
-        create_enemy(66, 6, True, False)
-        create_enemy(18, 6, True, False)
-        create_enemy(23, 6, True, False)
-        create_enemy(60, 6, True, False)
+        create_enemy(46, 3, True, False)
+        create_enemy(72, 3, True, False)
+        create_enemy(66, 3, True, False)
+        create_enemy(18, 3, True, False)
+        create_enemy(23, 3, True, False)
+        create_enemy(60, 3, True, False)
 
     def init_items(self):
         self.coins = SpriteList()
@@ -203,6 +204,7 @@ class Game(ge.Platformer):
         self.move_platform = 3
         self.move_enemie = 5
         self.move_enemy = 5
+        self.angle_text = 0
 
     def collide_coins(self, dt):
         self.coins.update()
@@ -248,8 +250,16 @@ class Game(ge.Platformer):
 
         for disc in discs_hit_list:
             disc.remove_from_sprite_lists()
-            self.player.jump += 50
+            self.player.jump += 150
             arcade.play_sound(self.disc_sound)
+
+    def collide_door(self, dt):
+        self.doortop.update()
+        self.doorkey.update()
+
+        if arcade.check_for_collision_with_list(self.player, self.doorkey) or arcade.check_for_collision_with_list(self.player, self.doortop):
+            self.game_win()
+
 
     def player_die(self):
         if self.cont == self.SCORE:
@@ -264,7 +274,10 @@ class Game(ge.Platformer):
             self.cont = 0
 
     def game_over(self, dt):
-        game.exit()
+        pass
+
+    def game_win(self):
+        self.win = True 
 
     def object_can_move(self, name, collision):
         check_hit = []
@@ -312,12 +325,14 @@ class Game(ge.Platformer):
         if self.player_life >= 1:
             super().on_update(dt)
             self.collide_coins(dt)
-            self.collide_spikes(dt)
+            # self.collide_spikes(dt)
             self.collide_enemies(dt)
             self.move_enemies_in_x(dt)
             self.move_enemies_in_y(dt)
             self.collide_discs(dt)
             self.move_platforms(dt)
+            self.collide_door(dt)
+            self.angle_text += 0.5
         else:
             self.game_over(dt)
 
@@ -346,6 +361,11 @@ class Game(ge.Platformer):
         output_life = f"Life: {self.player_life}"
         arcade.draw_text(output_score, self.viewport_horizontal_start, self.viewport_vertical_start + 10, arcade.color.BLACK, 25)
         arcade.draw_text(output_life, self.viewport_horizontal_start + 250, self.viewport_vertical_start + 10, arcade.color.BLACK, 25)
+
+        #Tela de Vitória
+        if self.win:
+            output_win = f"You WIN!"
+            arcade.draw_text(output_win, self.viewport_horizontal_start + 250, self.viewport_vertical_start + 700, arcade.color.BLACK, 250)
 
 if __name__ == "__main__":
     Game().run()
